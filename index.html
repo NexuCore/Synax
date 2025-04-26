@@ -273,6 +273,32 @@
             margin-bottom: 0.5rem;
         }
 
+        /* Replace existing .search-btn styles */
+        .search-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            width: 24px; /* Adjust as needed */
+            height: 24px; /* Adjust as needed */
+        }
+
+        .search-icon {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: invert(50%) sepia(98%) saturate(1445%) hue-rotate(194deg) brightness(98%) contrast(94%);
+        }
+
+        /* Dark mode adjustment */
+        [data-theme="dark"] .search-icon {
+            filter: invert(80%) sepia(40%) saturate(1000%) hue-rotate(190deg) brightness(105%) contrast(95%);
+        }
+
         .loading {
             display: none;
             text-align: center;
@@ -358,7 +384,9 @@
         
         <div class="search-container">
             <input type="text" class="search-input" id="searchInput" placeholder="Search the web...">
-            <button class="search-btn" id="searchBtn">🔍</button>
+            <button class="search-btn" id="searchBtn">
+                <img src="https://nexucore.github.io/Synax/assets/MagnifyingGlass.png" alt="Search" class="search-icon">
+            </button>
         </div>
 
         <div class="loading" id="loading">
