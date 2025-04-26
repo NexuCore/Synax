@@ -1,0 +1,828 @@
+    {
+        name: "Wikipedia",
+        url: "https://wikipedia.org",
+        description: "The Free Encyclopedia - Wikipedia is a free online encyclopedia, created and edited by volunteers around the world.",
+        category: "Reference"
+    },
+    {
+        name: "GitHub",
+        url: "https://github.com",
+        description: "GitHub is where over 100 million developers shape the future of software, together.",
+        category: "Development"
+    },
+    {
+        name: "Stack Overflow",
+        url: "https://stackoverflow.com",
+        description: "Stack Overflow is the largest, most trusted online community for developers to learn, share their programming knowledge.",
+        category: "Q&A"
+    },
+    {
+        name: "YouTube",
+        url: "https://youtube.com",
+        description: "Enjoy the videos and music you love, upload original content, and share it all with friends, family, and the world on YouTube.",
+        category: "Video"
+    },
+    {
+        name: "Reddit",
+        url: "https://reddit.com",
+        description: "Reddit is a network of communities where people can dive into their interests, hobbies and passions.",
+        category: "Social"
+    },
+    {
+        name: "Google",
+        url: "https://google.com",
+        description: "Search the world's information, including webpages, images, videos and more.",
+        category: "Search"
+    },
+    {
+        name: "Twitter",
+        url: "https://twitter.com",
+        description: "From breaking news and entertainment to sports and politics, get the full story with all the live commentary.",
+        category: "Social"
+    },
+    {
+        name: "Amazon",
+        url: "https://amazon.com",
+        description: "Free delivery on millions of items with Prime. Low prices across earth's biggest selection of books, music, DVDs, electronics...",
+        category: "Shopping"
+    },
+    {
+        name: "BobIsAI",
+        url: "https://nexucore.github.io/bobisai/BobIsAI.html",
+        description: "A free AI website where you can chat with different models without limit! There is also image generation!",
+        category: "AI"
+    },
+    {
+    name: "Khan Academy",
+    url: "https://khanacademy.org",
+    description: "Khan Academy offers practice exercises, instructional videos, and a personalized learning dashboard for learners.",
+    category: "Education"
+},
+{
+    name: "Coursera",
+    url: "https://coursera.org",
+    description: "Coursera offers online courses from top universities and companies worldwide.",
+    category: "Education"
+},
+{
+    name: "LinkedIn",
+    url: "https://linkedin.com",
+    description: "LinkedIn is the world's largest professional network to connect with colleagues and find job opportunities.",
+    category: "Social"
+},
+{
+    name: "Netflix",
+    url: "https://netflix.com",
+    description: "Watch TV shows and movies anytime, anywhere. Stream your favorite content online or offline.",
+    category: "Video"
+},
+{
+    name: "Medium",
+    url: "https://medium.com",
+    description: "Medium is a platform where people write, read, and share insightful stories and articles.",
+    category: "Blog"
+},
+{
+    name: "Trello",
+    url: "https://trello.com",
+    description: "Trello helps teams manage projects and tasks with boards, lists, and cards.",
+    category: "Productivity"
+},
+{
+    name: "Figma",
+    url: "https://figma.com",
+    description: "Figma is a collaborative interface design tool used for UI/UX design projects.",
+    category: "Design"
+},
+{
+    name: "Pixabay",
+    url: "https://pixabay.com",
+    description: "Find free images and videos to use anywhere, royalty-free.",
+    category: "Media"
+},
+{
+    name: "Wayback Machine",
+    url: "https://archive.org/web",
+    description: "Explore archived versions of websites with the Wayback Machine from Internet Archive.",
+    category: "Reference"
+},
+{
+    name: "Product Hunt",
+    url: "https://producthunt.com",
+    description: "Product Hunt surfaces the best new products, every day.",
+    category: "Tech"
+},
+{
+    name: "DuckDuckGo",
+    url: "https://duckduckgo.com",
+    description: "DuckDuckGo is a privacy-focused search engine that doesn’t track you.",
+    category: "Search"
+},
+{
+    name: "Hacker News",
+    url: "https://news.ycombinator.com",
+    description: "Hacker News is a social news site focusing on computer science and entrepreneurship.",
+    category: "Tech"
+},
+{
+    name: "Canva",
+    url: "https://canva.com",
+    description: "Canva is a graphic design platform used to create social media graphics, presentations, posters, and more.",
+    category: "Design"
+},
+{
+    name: "Unsplash",
+    url: "https://unsplash.com",
+    description: "Beautiful, free images gifted by the world’s most generous community of photographers.",
+    category: "Media"
+},
+{
+    name: "Notion",
+    url: "https://notion.so",
+    description: "Notion is an all-in-one workspace for notes, docs, wikis, and project management.",
+    category: "Productivity"
+},
+{
+    name: "OpenAI",
+    url: "https://openai.com",
+    description: "OpenAI is an AI research and deployment company developing advanced AI tools and models.",
+    category: "AI"
+},
+{
+    name: "Twitch",
+    url: "https://twitch.tv",
+    description: "Twitch is the world's leading live streaming platform for gamers and creators.",
+    category: "Video"
+},
+{
+    name: "Pinterest",
+    url: "https://pinterest.com",
+    description: "Discover recipes, home ideas, style inspiration, and other ideas to try.",
+    category: "Social"
+},
+{
+    name: "Quora",
+    url: "https://quora.com",
+    description: "Quora is a place to gain and share knowledge, asking and answering questions.",
+    category: "Q&A"
+},
+{
+    name: "Dev.to",
+    url: "https://dev.to",
+    description: "A community of software developers writing about coding, careers, and life.",
+    category: "Development"
+},
+{
+    name: "Medium Daily Digest",
+    url: "https://medium.com/daily-digest",
+    description: "Stay updated with handpicked articles from Medium delivered daily.",
+    category: "Blog"
+},
+{
+    name: "SoundCloud",
+    url: "https://soundcloud.com",
+    description: "SoundCloud is an open music platform that lets anyone upload and share their tracks.",
+    category: "Music"
+},
+{
+    name: "CodePen",
+    url: "https://codepen.io",
+    description: "CodePen is a social development environment for front-end designers and developers to showcase and test HTML, CSS, and JavaScript.",
+    category: "Development"
+},
+{
+    name: "Behance",
+    url: "https://behance.net",
+    description: "Behance is a platform to showcase and discover creative work across all fields.",
+    category: "Design"
+},
+{
+    name: "Bitbucket",
+    url: "https://bitbucket.org",
+    description: "Bitbucket is a Git-based source code repository hosting service owned by Atlassian.",
+    category: "Development"
+},
+{
+    name: "LibreTexts",
+    url: "https://libretexts.org",
+    description: "A large online library of free, open-access textbooks for higher education.",
+    category: "Education"
+},
+{
+    name: "Crunchyroll",
+    url: "https://crunchyroll.com",
+    description: "Watch the latest anime and read manga legally on Crunchyroll.",
+    category: "Entertainment"
+},
+{
+    name: "Deezer",
+    url: "https://deezer.com",
+    description: "Deezer lets you play millions of songs and podcasts for free.",
+    category: "Music"
+},
+{
+    name: "Bloomberg",
+    url: "https://bloomberg.com",
+    description: "Bloomberg delivers business and markets news, data, analysis, and video.",
+    category: "News"
+},
+{
+    name: "The Verge",
+    url: "https://theverge.com",
+    description: "The Verge covers the intersection of technology, science, art, and culture.",
+    category: "Tech News"
+},
+{
+    name: "GOG",
+    url: "https://gog.com",
+    description: "GOG offers DRM-free games with a focus on classics and indie titles.",
+    category: "Gaming"
+},
+{
+    name: "Indeed",
+    url: "https://indeed.com",
+    description: "Indeed is a job search engine that helps people find employment opportunities globally.",
+    category: "Jobs"
+},
+{
+    name: "Tripadvisor",
+    url: "https://tripadvisor.com",
+    description: "Tripadvisor offers travel reviews and advice on hotels, resorts, flights, vacation rentals, and more.",
+    category: "Travel"
+},
+{
+    name: "Zillow",
+    url: "https://zillow.com",
+    description: "Zillow is a real estate marketplace for buying, selling, and renting homes.",
+    category: "Real Estate"
+},
+{
+    name: "Investopedia",
+    url: "https://investopedia.com",
+    description: "Investopedia provides trusted financial information, tutorials, and investment strategies.",
+    category: "Finance"
+},
+{
+    name: "Wolfram Alpha",
+    url: "https://wolframalpha.com",
+    description: "Wolfram Alpha is a powerful computational engine for math, science, and data analysis.",
+    category: "Reference"
+},
+{
+    name: "Dribbble",
+    url: "https://dribbble.com",
+    description: "Dribbble is a community for showcasing user-made artwork and design portfolios.",
+    category: "Design"
+},
+{
+    name: "Bandcamp",
+    url: "https://bandcamp.com",
+    description: "Bandcamp is a music platform where artists can share and sell their music directly to fans.",
+    category: "Music"
+},
+{
+    name: "Namecheap",
+    url: "https://namecheap.com",
+    description: "Namecheap is a domain registrar and web hosting company with great deals on domains and SSLs.",
+    category: "Web Tools"
+},
+{
+    name: "Replit",
+    url: "https://replit.com",
+    description: "Replit is a collaborative online coding platform that supports multiple programming languages.",
+    category: "Development"
+},
+{
+    name: "Fandom",
+    url: "https://fandom.com",
+    description: "Fandom is the fan-powered encyclopedia covering entertainment, gaming, and pop culture topics.",
+    category: "Wiki"
+},
+{
+    name: "Wikipedia - Technology",
+    url: "https://en.wikipedia.org/wiki/Technology",
+    description: "An overview of technology, its history, development, and impact on society.",
+    category: "Wiki"
+},
+{
+    name: "Wikipedia - Artificial Intelligence",
+    url: "https://en.wikipedia.org/wiki/Artificial_intelligence",
+    description: "Learn about artificial intelligence, its history, techniques, applications, and future challenges.",
+    category: "Wiki"
+},
+{
+    name: "Wikipedia - Space Exploration",
+    url: "https://en.wikipedia.org/wiki/Space_exploration",
+    description: "Explore the history and future of space exploration and the major missions to date.",
+    category: "Wiki"
+},
+{
+    name: "Minecraft Wiki",
+    url: "https://minecraft.fandom.com/wiki/Minecraft_Wiki",
+    description: "The official community-driven wiki for Minecraft with information on gameplay, updates, and strategies.",
+    category: "Wiki"
+},
+{
+    name: "Genshin Impact Wiki",
+    url: "https://genshin-impact.fandom.com/wiki/Genshin_Impact_Wiki",
+    description: "Your comprehensive guide to the open-world RPG Genshin Impact, including characters, quests, and events.",
+    category: "Wiki"
+},
+{
+    name: "Memory Alpha (Star Trek Wiki)",
+    url: "https://memory-alpha.fandom.com/wiki/Portal:Main",
+    description: "Memory Alpha is a collaborative project to create the most definitive, accurate database of Star Trek information.",
+    category: "Wiki"
+},
+{
+    name: "Wikipedia - History of the Internet",
+    url: "https://en.wikipedia.org/wiki/History_of_the_Internet",
+    description: "A detailed history of how the Internet developed from the 1960s to the present.",
+    category: "Wiki"
+},
+{
+    name: "Arknights Wiki",
+    url: "https://arknights.fandom.com/wiki/Arknights_Wiki",
+    description: "The main fan-maintained resource for the strategy RPG game Arknights.",
+    category: "Wiki"
+},
+{
+    name: "Zelda Wiki",
+    url: "https://zeldawiki.wiki",
+    description: "A comprehensive guide to The Legend of Zelda series, covering all games, characters, and lore.",
+    category: "Wiki"
+},
+{
+    name: "Wikipedia - Quantum Mechanics",
+    url: "https://en.wikipedia.org/wiki/Quantum_mechanics",
+    description: "A fundamental theory in physics describing the properties of nature on the scale of atoms and subatomic particles.",
+    category: "Wiki"
+},
+{
+    name: "One Piece Wiki",
+    url: "https://onepiece.fandom.com/wiki/One_Piece_Wiki",
+    description: "The ultimate guide to the One Piece anime and manga series, covering characters, story arcs, and powers.",
+    category: "Wiki"
+},
+{
+    name: "Elder Scrolls Wiki",
+    url: "https://elderscrolls.fandom.com/wiki/Elder_Scrolls_Wiki",
+    description: "Your source for all Elder Scrolls games including lore, characters, quests, and gear.",
+    category: "Wiki"
+},
+{
+    name: "Warhammer 40k Wiki - Lexicanum",
+    url: "https://wh40k.lexicanum.com/wiki/Main_Page",
+    description: "A fan-maintained encyclopedia for everything in the Warhammer 40,000 universe.",
+    category: "Wiki"
+},
+{
+    name: "Cyberpunk Wiki",
+    url: "https://cyberpunk.fandom.com/wiki/Cyberpunk_Wiki",
+    description: "Dive into the world of Cyberpunk 2077 with detailed lore, characters, and mission walkthroughs.",
+    category: "Wiki"
+},
+{
+    name: "Pokémon Wiki",
+    url: "https://pokemon.fandom.com/wiki/Pok%C3%A9mon_Wiki",
+    description: "Your go-to place for Pokémon games, anime, trading cards, and creatures.",
+    category: "Wiki"
+},
+{
+    name: "Wookieepedia (Star Wars Wiki)",
+    url: "https://starwars.fandom.com/wiki/Main_Page",
+    description: "The official fan-made Star Wars encyclopedia covering everything from canon to Legends.",
+    category: "Wiki"
+},
+{
+    name: "Dark Souls Wiki",
+    url: "https://darksouls.fandom.com/wiki/Dark_Souls_Wiki",
+    description: "Strategies, lore, and guides for the Dark Souls series and other FromSoftware games.",
+    category: "Wiki"
+},
+{
+    name: "SMT/Persona Wiki",
+    url: "https://megamitensei.fandom.com/wiki/Megami_Tensei_Wiki",
+    description: "Dedicated to the Shin Megami Tensei and Persona franchises, with in-depth character and demon info.",
+    category: "Wiki"
+},
+{
+    name: "League of Legends Wiki",
+    url: "https://leagueoflegends.fandom.com/wiki/League_of_Legends_Wiki",
+    description: "Covers every champion, item, patch, and event in the world of League of Legends.",
+    category: "Wiki"
+},
+{
+    name: "Crunchbase",
+    url: "https://crunchbase.com",
+    description: "Discover innovative companies and the people behind them through detailed company profiles.",
+    category: "Business"
+},
+{
+    name: "BBC News",
+    url: "https://bbc.com/news",
+    description: "Trusted global news from the British Broadcasting Corporation (BBC), covering all categories.",
+    category: "News"
+},
+{
+    name: "Forbes",
+    url: "https://forbes.com",
+    description: "Business, investing, technology, entrepreneurship, leadership, and lifestyle news and articles.",
+    category: "Business"
+},
+{
+    name: "CNET",
+    url: "https://cnet.com",
+    description: "CNET provides news, articles, reviews, and videos about the latest tech products and gadgets.",
+    category: "Tech News"
+},
+{
+    name: "The Atlantic",
+    url: "https://theatlantic.com",
+    description: "A magazine that covers news, politics, culture, technology, health, and more with deep reporting.",
+    category: "News"
+},
+{
+    name: "Kickstarter",
+    url: "https://kickstarter.com",
+    description: "A platform for funding creative projects like games, movies, music, and art.",
+    category: "Crowdfunding"
+},
+{
+    name: "Wayfair",
+    url: "https://wayfair.com",
+    description: "Shop furniture, home decor, and more online at Wayfair.",
+    category: "Shopping"
+},
+{
+    name: "TED",
+    url: "https://ted.com",
+    description: "TED is a platform for spreading ideas, usually in the form of short, powerful talks.",
+    category: "Education"
+},
+{
+    name: "WeTransfer",
+    url: "https://wetransfer.com",
+    description: "A free service to send big files easily across the internet.",
+    category: "Web Tools"
+},
+{
+    name: "Patreon",
+    url: "https://patreon.com",
+    description: "Patreon allows creators to earn recurring income from their fans directly.",
+    category: "Crowdfunding"
+},
+{
+    name: "ArtStation",
+    url: "https://artstation.com",
+    description: "Showcase and discover creative work from the world's best artists in games, movies, media, and entertainment.",
+    category: "Art"
+},
+{
+    name: "DeviantArt",
+    url: "https://deviantart.com",
+    description: "DeviantArt is the largest online social network for artists and art enthusiasts.",
+    category: "Art"
+},
+{
+    name: "LibreOffice",
+    url: "https://libreoffice.org",
+    description: "LibreOffice is a free and powerful open-source office suite, a successor to OpenOffice.",
+    category: "Productivity"
+},
+{
+    name: "Blender",
+    url: "https://blender.org",
+    description: "Blender is a free and open-source 3D creation suite for modeling, animation, simulation, and more.",
+    category: "Design"
+},
+{
+    name: "GitLab",
+    url: "https://gitlab.com",
+    description: "GitLab is a web-based DevOps lifecycle tool that provides a Git repository manager.",
+    category: "Development"
+},
+{
+    name: "Glitch",
+    url: "https://glitch.com",
+    description: "Glitch is a friendly community where you can create, remix, and share web apps instantly.",
+    category: "Development"
+},
+{
+    name: "Archive.org",
+    url: "https://archive.org",
+    description: "The Internet Archive is a non-profit library of millions of free books, movies, software, music, websites, and more.",
+    category: "Reference"
+},
+{
+    name: "Unsplash Wallpapers",
+    url: "https://unsplash.com/wallpapers",
+    description: "Find beautiful, high-resolution wallpapers for your desktop or mobile from Unsplash.",
+    category: "Media"
+},
+{
+    name: "Pexels",
+    url: "https://pexels.com",
+    description: "Pexels provides high-quality and completely free stock photos and videos contributed by talented creators.",
+    category: "Media"
+},
+{
+    name: "Pixlr",
+    url: "https://pixlr.com",
+    description: "Pixlr is a free online photo editor that lets you edit images and create stunning designs right in your browser.",
+    category: "Design"
+},
+{
+  name: "Startpage",
+  url: "https://startpage.com",
+  description: "Private search engine that doesn't track or store user data.",
+  category: "Search"
+},
+{
+  name: "Brave Search",
+  url: "https://search.brave.com",
+  description: "Independent, privacy-focused search engine from Brave.",
+  category: "Search"
+},
+{
+  name: "Qwant",
+  url: "https://qwant.com",
+  description: "European search engine emphasizing user privacy and neutrality.",
+  category: "Search"
+},
+{
+  name: "Mojeek",
+  url: "https://mojeek.com",
+  description: "Privacy-first search engine with its own crawler and index.",
+  category: "Search"
+},
+{
+  name: "Ecosia",
+  url: "https://ecosia.org",
+  description: "Eco-friendly search engine that plants trees with ad revenue.",
+  category: "Search"
+},
+{
+  name: "Yandex",
+  url: "https://yandex.com",
+  description: "Russian search giant offering web, maps, and image search.",
+  category: "Search"
+},
+{
+  name: "Neeva",
+  url: "https://neeva.com",
+  description: "Subscription-based ad-free private search engine (now acquired by Snowflake).",
+  category: "Search"
+},
+{
+  name: "Searx",
+  url: "https://searx.space",
+  description: "Free, open-source metasearch engine aggregating results without tracking.",
+  category: "Search"
+},
+{
+  name: "You.com",
+  url: "https://you.com",
+  description: "Customizable search engine with AI-powered apps and tools.",
+  category: "Search"
+},
+{
+  name: "Swisscows",
+  url: "https://swisscows.com",
+  description: "Privacy-enhanced, family-friendly search engine from Switzerland.",
+  category: "Search"
+},
+{
+  name: "DuckDuckGo",
+  url: "https://duckduckgo.com",
+  description: "Famous privacy-focused search engine that doesn't track users.",
+  category: "Search"
+},
+{
+  name: "MetaGer",
+  url: "https://metager.org",
+  description: "German metasearch engine offering anonymous search results.",
+  category: "Search"
+},
+{
+  name: "Presearch",
+  url: "https://presearch.com",
+  description: "Decentralized search engine rewarding users with crypto tokens.",
+  category: "Search"
+},
+{
+  name: "Andi",
+  url: "https://andisearch.com",
+  description: "AI-powered search engine providing conversational, summarized results.",
+  category: "Search"
+},
+{
+  name: "Kagi",
+  url: "https://kagi.com",
+  description: "Premium, ad-free, private search engine with focus on high-quality results.",
+  category: "Search"
+},
+{
+  name: "Infinity Search",
+  url: "https://infinitysearch.co",
+  description: "Privacy-focused search engine with customizable features.",
+  category: "Search"
+},
+{
+  name: "Gibiru",
+  url: "https://gibiru.com",
+  description: "Uncensored private search engine designed for freedom of information.",
+  category: "Search"
+},
+{
+  name: "YaCy",
+  url: "https://yacy.net",
+  description: "Decentralized, peer-to-peer search engine anyone can host.",
+  category: "Search"
+},
+{
+  name: "Komo AI",
+  url: "https://komo.ai",
+  description: "Fast AI-first search engine designed for speed and minimalism.",
+  category: "Search"
+},
+{
+  name: "Marginalia Search",
+  url: "https://search.marginalia.nu",
+  description: "Independent search engine indexing small and personal websites.",
+  category: "Search"
+},
+{
+  name: "Roblox",
+  url: "https://roblox.com",
+  description: "Roblox is a platform where you can play, create, and share games with millions of users. Sign up for free, choose your username, and start having fun on your device.",
+  category: "Games"
+},
+{
+  name: "Minecraft",
+  url: "https://minecraft.net",
+  description: "A sandbox video game where players can build and explore virtual worlds.",
+  category: "Games"
+},
+{
+  name: "Epic Games",
+  url: "https://epicgames.com",
+  description: "A video game and software developer known for titles like Fortnite and Unreal Engine.",
+  category: "Games"
+},
+{
+  name: "Steam",
+  url: "https://store.steampowered.com",
+  description: "A digital distribution platform for video games, offering games, software, and community features.",
+  category: "Games"
+},
+{
+  name: "League of Legends",
+  url: "https://leagueoflegends.com",
+  description: "A multiplayer online battle arena (MOBA) game, one of the most popular esports titles in the world.",
+  category: "Games"
+},
+{
+  name: "Fortnite",
+  url: "https://epicgames.com/fortnite",
+  description: "A battle royale game that is part of the Fortnite franchise, known for its creative building mechanics.",
+  category: "Games"
+},
+{
+  name: "Twitch",
+  url: "https://twitch.tv",
+  description: "A live streaming platform, mainly for video game streaming and esports competitions.",
+  category: "Games"
+},
+{
+  name: "World of Warcraft",
+  url: "https://worldofwarcraft.com",
+  description: "A massively multiplayer online role-playing game (MMORPG) set in the fantasy world of Azeroth.",
+  category: "Games"
+},
+{
+  name: "PlayStation",
+  url: "https://playstation.com",
+  description: "A gaming console platform with a wide range of games and services.",
+  category: "Games"
+},
+{
+  name: "Xbox",
+  url: "https://xbox.com",
+  description: "A gaming console brand developed by Microsoft, offering both hardware and online services.",
+  category: "Games"
+},
+{
+  name: "Itch.io",
+  url: "https://itch.io",
+  description: "An open indie game marketplace where creators can host, sell, and promote their games.",
+  category: "Games"
+},
+{
+  name: "Newgrounds",
+  url: "https://newgrounds.com",
+  description: "A classic online community featuring indie games, animations, art, and audio.",
+  category: "Games"
+},
+{
+  name: "Armor Games",
+  url: "https://armorgames.com",
+  description: "A site offering hundreds of free-to-play browser games across different genres.",
+  category: "Games"
+},
+{
+  name: "Miniclip",
+  url: "https://miniclip.com",
+  description: "A global platform known for its mobile and browser-based games.",
+  category: "Games"
+},
+{
+  name: "Kongregate",
+  url: "https://kongregate.com",
+  description: "A web gaming portal hosting thousands of user-submitted games.",
+  category: "Games"
+},
+{
+  name: "Poki",
+  url: "https://poki.com",
+  description: "A free online games platform offering a wide variety of casual games.",
+  category: "Games"
+},
+{
+  name: "Coolmath Games",
+  url: "https://coolmathgames.com",
+  description: "A popular site with fun logic, math, and skill-based games for all ages.",
+  category: "Games"
+},
+{
+  name: "Addicting Games",
+  url: "https://addictinggames.com",
+  description: "A large collection of free online games across all genres.",
+  category: "Games"
+},
+{
+  name: "Nitrome",
+  url: "https://nitrome.com",
+  description: "An indie game company famous for its colorful and quirky pixel art games.",
+  category: "Games"
+},
+{
+  name: "Game Jolt",
+  url: "https://gamejolt.com",
+  description: "A community platform for indie game developers to share and sell their games.",
+  category: "Games"
+},
+{
+  name: "Rockstar Games",
+  url: "https://rockstargames.com",
+  description: "The developer and publisher behind Grand Theft Auto, Red Dead Redemption, and other popular franchises.",
+  category: "Games"
+},
+{
+  name: "Bethesda",
+  url: "https://bethesda.net",
+  description: "The official site for Bethesda Game Studios, known for The Elder Scrolls and Fallout series.",
+  category: "Games"
+},
+{
+  name: "Blizzard Entertainment",
+  url: "https://blizzard.com",
+  description: "Developer and publisher of games like Overwatch, Diablo, StarCraft, and Hearthstone.",
+  category: "Games"
+},
+{
+  name: "Ubisoft",
+  url: "https://ubisoft.com",
+  description: "Major publisher and developer known for Assassin’s Creed, Far Cry, and Rainbow Six.",
+  category: "Games"
+},
+{
+  name: "Bandai Namco",
+  url: "https://bandainamcoent.com",
+  description: "The publisher behind games like Tekken, Dark Souls, and Pac-Man.",
+  category: "Games"
+},
+{
+  name: "Square Enix",
+  url: "https://square-enix-games.com",
+  description: "Famous for legendary franchises like Final Fantasy, Dragon Quest, and Kingdom Hearts.",
+  category: "Games"
+},
+{
+  name: "Riot Games",
+  url: "https://riotgames.com",
+  description: "The company behind League of Legends, VALORANT, and other competitive titles.",
+  category: "Games"
+},
+{
+  name: "IO Interactive",
+  url: "https://ioi.dk",
+  description: "The developers of the Hitman series and upcoming James Bond project.",
+  category: "Games"
+},
+{
+  name: "Supergiant Games",
+  url: "https://supergiantgames.com",
+  description: "An indie studio behind Hades, Bastion, Transistor, and Pyre.",
+  category: "Games"
+}
