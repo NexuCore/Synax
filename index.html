@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synax - AI-Powered Search</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --primary-color: #4285f4;
+            --secondary-color: #f1f1f1;
+            --search-bg: #ffffff;
+            --search-border: #dfe1e5;
+            --result-bg: #ffffff;
+            --result-hover: #f8f9fa;
+            --shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --primary-color: #8ab4f8;
+            --secondary-color: #2d2d2d;
+            --search-bg: #2d2d2d;
+            --search-border: #5f6368;
+            --result-bg: #2d2d2d;
+            --result-hover: #3c4043;
+            --shadow: 0 1px 6px rgba(0, 0, 0, 0.28);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem;
+        }
+
+        .settings-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .settings-menu {
+            position: absolute;
+            top: 4rem;
+            right: 1rem;
+            background-color: var(--result-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 1rem;
+            width: 200px;
+            display: none;
+            z-index: 100;
+        }
+
+        .settings-menu h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .theme-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .theme-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .theme-option:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-left: auto;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .toggle-container:hover {
+            background-color: var(--secondary-color);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .search-container {
+            width: 100%;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 24px;
+            border: 1px solid var(--search-border);
+            background-color: var(--search-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+            outline: none;
+            box-shadow: var(--shadow);
+        }
+
+        .search-input:focus {
+            box-shadow: 0 1px 6px rgba(66, 133, 244, 0.4);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .results-container {
+            width: 100%;
+            display: none;
+        }
+
+        .result {
+            background-color: var(--result-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .result:hover {
+            background-color: var(--result-hover);
+        }
+
+        .result-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .result-url {
+            font-size: 0.8rem;
+            color: #0a6522;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-snippet {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .ai-response {
+            background-color: var(--result-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+            width: 100%;
+        }
+
+        .ai-response h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .popular-sites {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .site-btn {
+            padding: 0.5rem 1rem;
+            background-color: var(--secondary-color);
+            border: none;
+            border-radius: 20px;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .site-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="settings-btn" id="settingsBtn">⚙️</button>
+        <div class="settings-menu" id="settingsMenu">
+            <h3>Appearance</h3>
+            <div class="theme-options">
+                <div class="theme-option" data-theme="light">
+                    <span>☀️</span> Light Mode
+                </div>
+                <div class="theme-option" data-theme="dark">
+                    <span>🌙</span> Dark Mode
+                </div>
+                <div class="theme-option" data-theme="system">
+                    <span>💻</span> System Default
+                </div>
+            </div>
+            
+            <div class="toggle-container">
+                <span>Enable AI</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="aiToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="logo">Synax</div>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search the web...">
+            <button class="search-btn" id="searchBtn">🔍</button>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Searching...</p>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <div class="ai-response" id="aiResponse"></div>
+            <div id="searchResults"></div>
+        </div>
+
+        <div class="popular-sites">
+            <button class="site-btn" data-site="https://wikipedia.org">Wikipedia</button>
+            <button class="site-btn" data-site="https://github.com">GitHub</button>
+            <button class="site-btn" data-site="https://stackoverflow.com">Stack Overflow</button>
+            <button class="site-btn" data-site="https://youtube.com">YouTube</button>
+            <button class="site-btn" data-site="https://reddit.com">Reddit</button>
+        </div>
+    </main>
+
+    <footer>
+        © 2025 Synax Search | AI-Powered Search Engine
+    </footer>
+
+    <script>
+    // ====== DOM ELEMENTS ======
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsMenu = document.getElementById('settingsMenu');
+const searchInput = document.getElementById('searchInput');
+const searchBtn = document.getElementById('searchBtn');
+const resultsContainer = document.getElementById('resultsContainer');
+const searchResults = document.getElementById('searchResults');
+const aiResponse = document.getElementById('aiResponse');
+const loading = document.getElementById('loading');
+const siteBtns = document.querySelectorAll('.site-btn');
+const themeOptions = document.querySelectorAll('.theme-option');
+const aiToggle = document.getElementById('aiToggle');
+const mainContent = document.querySelector('main');
+const footer = document.querySelector('footer');
+
+// ====== SEARCH CONFIGURATION ======
+const websites = [
+    {
+        name: "Wikipedia",
+        url: "https://wikipedia.org",
+        description: "The Free Encyclopedia - Wikipedia is a free online encyclopedia, created and edited by volunteers around the world.",
+        category: "Reference"
+    },
+    {
+        name: "GitHub",
+        url: "https://github.com",
+        description: "GitHub is where over 100 million developers shape the future of software, together.",
+        category: "Development"
+    },
+    {
+        name: "Stack Overflow",
+        url: "https://stackoverflow.com",
+        description: "Stack Overflow is the largest, most trusted online community for developers to learn, share their programming knowledge.",
+        category: "Q&A"
+    },
+    {
+        name: "YouTube",
+        url: "https://youtube.com",
+        description: "Enjoy the videos and music you love, upload original content, and share it all with friends, family, and the world on YouTube.",
+        category: "Video"
+    },
+    {
+        name: "Reddit",
+        url: "https://reddit.com",
+        description: "Reddit is a network of communities where people can dive into their interests, hobbies and passions.",
+        category: "Social"
+    },
+    {
+        name: "Google",
+        url: "https://google.com",
+        description: "Search the world's information, including webpages, images, videos and more.",
+        category: "Search"
+    },
+    {
+        name: "Twitter",
+        url: "https://twitter.com",
+        description: "From breaking news and entertainment to sports and politics, get the full story with all the live commentary.",
+        category: "Social"
+    },
+    {
+        name: "Amazon",
+        url: "https://amazon.com",
+        description: "Free delivery on millions of items with Prime. Low prices across earth's biggest selection of books, music, DVDs, electronics...",
+        category: "Shopping"
+    },
+    {
+        name: "BobIsAI",
+        url: "https://nexucore.github.io/BobIsAI",
+        description: "A free AI website where you can chat with different models without limit! There is also image generation!",
+        category: "AI"
+    },
+    {
+    name: "Khan Academy",
+    url: "https://khanacademy.org",
+    description: "Khan Academy offers practice exercises, instructional videos, and a personalized learning dashboard for learners.",
+    category: "Education"
+},
+{
+    name: "Coursera",
+    url: "https://coursera.org",
+    description: "Coursera offers online courses from top universities and companies worldwide.",
+    category: "Education"
+},
+{
+    name: "LinkedIn",
+    url: "https://linkedin.com",
+    description: "LinkedIn is the world's largest professional network to connect with colleagues and find job opportunities.",
+    category: "Social"
+},
+{
+    name: "Netflix",
+    url: "https://netflix.com",
+    description: "Watch TV shows and movies anytime, anywhere. Stream your favorite content online or offline.",
+    category: "Video"
+},
+{
+    name: "Medium",
+    url: "https://medium.com",
+    description: "Medium is a platform where people write, read, and share insightful stories and articles.",
+    category: "Blog"
+},
+{
+    name: "Trello",
+    url: "https://trello.com",
+    description: "Trello helps teams manage projects and tasks with boards, lists, and cards.",
+    category: "Productivity"
+},
+{
+    name: "Figma",
+    url: "https://figma.com",
+    description: "Figma is a collaborative interface design tool used for UI/UX design projects.",
+    category: "Design"
+},
+{
+    name: "Pixabay",
+    url: "https://pixabay.com",
+    description: "Find free images and videos to use anywhere, royalty-free.",
+    category: "Media"
+},
+{
+    name: "Wayback Machine",
+    url: "https://archive.org/web",
+    description: "Explore archived versions of websites with the Wayback Machine from Internet Archive.",
+    category: "Reference"
+},
+{
+    name: "Product Hunt",
+    url: "https://producthunt.com",
+    description: "Product Hunt surfaces the best new products, every day.",
+    category: "Tech"
+},
+{
+    name: "DuckDuckGo",
+    url: "https://duckduckgo.com",
+    description: "DuckDuckGo is a privacy-focused search engine that doesn’t track you.",
+    category: "Search"
+},
+{
+    name: "Hacker News",
+    url: "https://news.ycombinator.com",
+    description: "Hacker News is a social news site focusing on computer science and entrepreneurship.",
+    category: "Tech"
+},
+{
+    name: "Canva",
+    url: "https://canva.com",
+    description: "Canva is a graphic design platform used to create social media graphics, presentations, posters, and more.",
+    category: "Design"
+},
+{
+    name: "Unsplash",
+    url: "https://unsplash.com",
+    description: "Beautiful, free images gifted by the world’s most generous community of photographers.",
+    category: "Media"
+},
+{
+    name: "Notion",
+    url: "https://notion.so",
+    description: "Notion is an all-in-one workspace for notes, docs, wikis, and project management.",
+    category: "Productivity"
+},
+{
+    name: "OpenAI",
+    url: "https://openai.com",
+    description: "OpenAI is an AI research and deployment company developing advanced AI tools and models.",
+    category: "AI"
+},
+{
+    name: "Twitch",
+    url: "https://twitch.tv",
+    description: "Twitch is the world's leading live streaming platform for gamers and creators.",
+    category: "Video"
+},
+{
+    name: "Pinterest",
+    url: "https://pinterest.com",
+    description: "Discover recipes, home ideas, style inspiration, and other ideas to try.",
+    category: "Social"
+},
+{
+    name: "Quora",
+    url: "https://quora.com",
+    description: "Quora is a place to gain and share knowledge, asking and answering questions.",
+    category: "Q&A"
+},
+{
+    name: "Dev.to",
+    url: "https://dev.to",
+    description: "A community of software developers writing about coding, careers, and life.",
+    category: "Development"
+},
+{
+    name: "Medium Daily Digest",
+    url: "https://medium.com/daily-digest",
+    description: "Stay updated with handpicked articles from Medium delivered daily.",
+    category: "Blog"
+},
+{
+    name: "SoundCloud",
+    url: "https://soundcloud.com",
+    description: "SoundCloud is an open music platform that lets anyone upload and share their tracks.",
+    category: "Music"
+},
+{
+    name: "CodePen",
+    url: "https://codepen.io",
+    description: "CodePen is a social development environment for front-end designers and developers to showcase and test HTML, CSS, and JavaScript.",
+    category: "Development"
+},
+{
+    name: "Behance",
+    url: "https://behance.net",
+    description: "Behance is a platform to showcase and discover creative work across all fields.",
+    category: "Design"
+},
+{
+    name: "Bitbucket",
+    url: "https://bitbucket.org",
+    description: "Bitbucket is a Git-based source code repository hosting service owned by Atlassian.",
+    category: "Development"
+},
+{
+    name: "LibreTexts",
+    url: "https://libretexts.org",
+    description: "A large online library of free, open-access textbooks for higher education.",
+    category: "Education"
+},
+{
+    name: "Crunchyroll",
+    url: "https://crunchyroll.com",
+    description: "Watch the latest anime and read manga legally on Crunchyroll.",
+    category: "Entertainment"
+},
+{
+    name: "Deezer",
+    url: "https://deezer.com",
+    description: "Deezer lets you play millions of songs and podcasts for free.",
+    category: "Music"
+},
+{
+    name: "Bloomberg",
+    url: "https://bloomberg.com",
+    description: "Bloomberg delivers business and markets news, data, analysis, and video.",
+    category: "News"
+},
+{
+    name: "The Verge",
+    url: "https://theverge.com",
+    description: "The Verge covers the intersection of technology, science, art, and culture.",
+    category: "Tech News"
+},
+{
+    name: "GOG",
+    url: "https://gog.com",
+    description: "GOG offers DRM-free games with a focus on classics and indie titles.",
+    category: "Gaming"
+},
+{
+    name: "Indeed",
+    url: "https://indeed.com",
+    description: "Indeed is a job search engine that helps people find employment opportunities globally.",
+    category: "Jobs"
+},
+{
+    name: "Tripadvisor",
+    url: "https://tripadvisor.com",
+    description: "Tripadvisor offers travel reviews and advice on hotels, resorts, flights, vacation rentals, and more.",
+    category: "Travel"
+},
+{
+    name: "Zillow",
+    url: "https://zillow.com",
+    description: "Zillow is a real estate marketplace for buying, selling, and renting homes.",
+    category: "Real Estate"
+},
+{
+    name: "Investopedia",
+    url: "https://investopedia.com",
+    description: "Investopedia provides trusted financial information, tutorials, and investment strategies.",
+    category: "Finance"
+},
+{
+    name: "Wolfram Alpha",
+    url: "https://wolframalpha.com",
+    description: "Wolfram Alpha is a powerful computational engine for math, science, and data analysis.",
+    category: "Reference"
+},
+{
+    name: "Dribbble",
+    url: "https://dribbble.com",
+    description: "Dribbble is a community for showcasing user-made artwork and design portfolios.",
+    category: "Design"
+},
+{
+    name: "Bandcamp",
+    url: "https://bandcamp.com",
+    description: "Bandcamp is a music platform where artists can share and sell their music directly to fans.",
+    category: "Music"
+},
+{
+    name: "Namecheap",
+    url: "https://namecheap.com",
+    description: "Namecheap is a domain registrar and web hosting company with great deals on domains and SSLs.",
+    category: "Web Tools"
+},
+{
+    name: "Replit",
+    url: "https://replit.com",
+    description: "Replit is a collaborative online coding platform that supports multiple programming languages.",
+    category: "Development"
+},
+{
+    name: "Fandom",
+    url: "https://fandom.com",
+    description: "Fandom is the fan-powered encyclopedia covering entertainment, gaming, and pop culture topics.",
+    category: "Wiki"
+},
+{
+    name: "Wikipedia - Technology",
+    url: "https://en.wikipedia.org/wiki/Technology",
+    description: "An overview of technology, its history, development, and impact on society.",
+    category: "Wiki"
+},
+{
+    name: "Wikipedia - Artificial Intelligence",
+    url: "https://en.wikipedia.org/wiki/Artificial_intelligence",
+    description: "Learn about artificial intelligence, its history, techniques, applications, and future challenges.",
+    category: "Wiki"
+},
+{
+    name: "Wikipedia - Space Exploration",
+    url: "https://en.wikipedia.org/wiki/Space_exploration",
+    description: "Explore the history and future of space exploration and the major missions to date.",
+    category: "Wiki"
+},
+{
+    name: "Minecraft Wiki",
+    url: "https://minecraft.fandom.com/wiki/Minecraft_Wiki",
+    description: "The official community-driven wiki for Minecraft with information on gameplay, updates, and strategies.",
+    category: "Wiki"
+},
+{
+    name: "Genshin Impact Wiki",
+    url: "https://genshin-impact.fandom.com/wiki/Genshin_Impact_Wiki",
+    description: "Your comprehensive guide to the open-world RPG Genshin Impact, including characters, quests, and events.",
+    category: "Wiki"
+},
+{
+    name: "Memory Alpha (Star Trek Wiki)",
+    url: "https://memory-alpha.fandom.com/wiki/Portal:Main",
+    description: "Memory Alpha is a collaborative project to create the most definitive, accurate database of Star Trek information.",
+    category: "Wiki"
+},
+{
+    name: "Wikipedia - History of the Internet",
+    url: "https://en.wikipedia.org/wiki/History_of_the_Internet",
+    description: "A detailed history of how the Internet developed from the 1960s to the present.",
+    category: "Wiki"
+},
+{
+    name: "Arknights Wiki",
+    url: "https://arknights.fandom.com/wiki/Arknights_Wiki",
+    description: "The main fan-maintained resource for the strategy RPG game Arknights.",
+    category: "Wiki"
+},
+{
+    name: "Zelda Wiki",
+    url: "https://zeldawiki.wiki",
+    description: "A comprehensive guide to The Legend of Zelda series, covering all games, characters, and lore.",
+    category: "Wiki"
+},
+{
+    name: "Wikipedia - Quantum Mechanics",
+    url: "https://en.wikipedia.org/wiki/Quantum_mechanics",
+    description: "A fundamental theory in physics describing the properties of nature on the scale of atoms and subatomic particles.",
+    category: "Wiki"
+},
+{
+    name: "One Piece Wiki",
+    url: "https://onepiece.fandom.com/wiki/One_Piece_Wiki",
+    description: "The ultimate guide to the One Piece anime and manga series, covering characters, story arcs, and powers.",
+    category: "Wiki"
+},
+{
+    name: "Elder Scrolls Wiki",
+    url: "https://elderscrolls.fandom.com/wiki/Elder_Scrolls_Wiki",
+    description: "Your source for all Elder Scrolls games including lore, characters, quests, and gear.",
+    category: "Wiki"
+},
+{
+    name: "Warhammer 40k Wiki - Lexicanum",
+    url: "https://wh40k.lexicanum.com/wiki/Main_Page",
+    description: "A fan-maintained encyclopedia for everything in the Warhammer 40,000 universe.",
+    category: "Wiki"
+},
+{
+    name: "Cyberpunk Wiki",
+    url: "https://cyberpunk.fandom.com/wiki/Cyberpunk_Wiki",
+    description: "Dive into the world of Cyberpunk 2077 with detailed lore, characters, and mission walkthroughs.",
+    category: "Wiki"
+},
+{
+    name: "Pokémon Wiki",
+    url: "https://pokemon.fandom.com/wiki/Pok%C3%A9mon_Wiki",
+    description: "Your go-to place for Pokémon games, anime, trading cards, and creatures.",
+    category: "Wiki"
+},
+{
+    name: "Wookieepedia (Star Wars Wiki)",
+    url: "https://starwars.fandom.com/wiki/Main_Page",
+    description: "The official fan-made Star Wars encyclopedia covering everything from canon to Legends.",
+    category: "Wiki"
+},
+{
+    name: "Dark Souls Wiki",
+    url: "https://darksouls.fandom.com/wiki/Dark_Souls_Wiki",
+    description: "Strategies, lore, and guides for the Dark Souls series and other FromSoftware games.",
+    category: "Wiki"
+},
+{
+    name: "SMT/Persona Wiki",
+    url: "https://megamitensei.fandom.com/wiki/Megami_Tensei_Wiki",
+    description: "Dedicated to the Shin Megami Tensei and Persona franchises, with in-depth character and demon info.",
+    category: "Wiki"
+},
+{
+    name: "League of Legends Wiki",
+    url: "https://leagueoflegends.fandom.com/wiki/League_of_Legends_Wiki",
+    description: "Covers every champion, item, patch, and event in the world of League of Legends.",
+    category: "Wiki"
+},
+{
+    name: "Crunchbase",
+    url: "https://crunchbase.com",
+    description: "Discover innovative companies and the people behind them through detailed company profiles.",
+    category: "Business"
+},
+{
+    name: "BBC News",
+    url: "https://bbc.com/news",
+    description: "Trusted global news from the British Broadcasting Corporation (BBC), covering all categories.",
+    category: "News"
+},
+{
+    name: "Forbes",
+    url: "https://forbes.com",
+    description: "Business, investing, technology, entrepreneurship, leadership, and lifestyle news and articles.",
+    category: "Business"
+},
+{
+    name: "CNET",
+    url: "https://cnet.com",
+    description: "CNET provides news, articles, reviews, and videos about the latest tech products and gadgets.",
+    category: "Tech News"
+},
+{
+    name: "The Atlantic",
+    url: "https://theatlantic.com",
+    description: "A magazine that covers news, politics, culture, technology, health, and more with deep reporting.",
+    category: "News"
+},
+{
+    name: "Kickstarter",
+    url: "https://kickstarter.com",
+    description: "A platform for funding creative projects like games, movies, music, and art.",
+    category: "Crowdfunding"
+},
+{
+    name: "Wayfair",
+    url: "https://wayfair.com",
+    description: "Shop furniture, home decor, and more online at Wayfair.",
+    category: "Shopping"
+},
+{
+    name: "TED",
+    url: "https://ted.com",
+    description: "TED is a platform for spreading ideas, usually in the form of short, powerful talks.",
+    category: "Education"
+},
+{
+    name: "WeTransfer",
+    url: "https://wetransfer.com",
+    description: "A free service to send big files easily across the internet.",
+    category: "Web Tools"
+},
+{
+    name: "Patreon",
+    url: "https://patreon.com",
+    description: "Patreon allows creators to earn recurring income from their fans directly.",
+    category: "Crowdfunding"
+},
+{
+    name: "ArtStation",
+    url: "https://artstation.com",
+    description: "Showcase and discover creative work from the world's best artists in games, movies, media, and entertainment.",
+    category: "Art"
+},
+{
+    name: "DeviantArt",
+    url: "https://deviantart.com",
+    description: "DeviantArt is the largest online social network for artists and art enthusiasts.",
+    category: "Art"
+},
+{
+    name: "LibreOffice",
+    url: "https://libreoffice.org",
+    description: "LibreOffice is a free and powerful open-source office suite, a successor to OpenOffice.",
+    category: "Productivity"
+},
+{
+    name: "Blender",
+    url: "https://blender.org",
+    description: "Blender is a free and open-source 3D creation suite for modeling, animation, simulation, and more.",
+    category: "Design"
+},
+{
+    name: "GitLab",
+    url: "https://gitlab.com",
+    description: "GitLab is a web-based DevOps lifecycle tool that provides a Git repository manager.",
+    category: "Development"
+},
+{
+    name: "Glitch",
+    url: "https://glitch.com",
+    description: "Glitch is a friendly community where you can create, remix, and share web apps instantly.",
+    category: "Development"
+},
+{
+    name: "Archive.org",
+    url: "https://archive.org",
+    description: "The Internet Archive is a non-profit library of millions of free books, movies, software, music, websites, and more.",
+    category: "Reference"
+},
+{
+    name: "Unsplash Wallpapers",
+    url: "https://unsplash.com/wallpapers",
+    description: "Find beautiful, high-resolution wallpapers for your desktop or mobile from Unsplash.",
+    category: "Media"
+},
+{
+    name: "Pexels",
+    url: "https://pexels.com",
+    description: "Pexels provides high-quality and completely free stock photos and videos contributed by talented creators.",
+    category: "Media"
+},
+{
+    name: "Pixlr",
+    url: "https://pixlr.com",
+    description: "Pixlr is a free online photo editor that lets you edit images and create stunning designs right in your browser.",
+    category: "Design"
+},
+{
+  name: "Startpage",
+  url: "https://startpage.com",
+  description: "Private search engine that doesn't track or store user data.",
+  category: "Search"
+},
+{
+  name: "Brave Search",
+  url: "https://search.brave.com",
+  description: "Independent, privacy-focused search engine from Brave.",
+  category: "Search"
+},
+{
+  name: "Qwant",
+  url: "https://qwant.com",
+  description: "European search engine emphasizing user privacy and neutrality.",
+  category: "Search"
+},
+{
+  name: "Mojeek",
+  url: "https://mojeek.com",
+  description: "Privacy-first search engine with its own crawler and index.",
+  category: "Search"
+},
+{
+  name: "Ecosia",
+  url: "https://ecosia.org",
+  description: "Eco-friendly search engine that plants trees with ad revenue.",
+  category: "Search"
+},
+{
+  name: "Yandex",
+  url: "https://yandex.com",
+  description: "Russian search giant offering web, maps, and image search.",
+  category: "Search"
+},
+{
+  name: "Neeva",
+  url: "https://neeva.com",
+  description: "Subscription-based ad-free private search engine (now acquired by Snowflake).",
+  category: "Search"
+},
+{
+  name: "Searx",
+  url: "https://searx.space",
+  description: "Free, open-source metasearch engine aggregating results without tracking.",
+  category: "Search"
+},
+{
+  name: "You.com",
+  url: "https://you.com",
+  description: "Customizable search engine with AI-powered apps and tools.",
+  category: "Search"
+},
+{
+  name: "Swisscows",
+  url: "https://swisscows.com",
+  description: "Privacy-enhanced, family-friendly search engine from Switzerland.",
+  category: "Search"
+},
+{
+  name: "DuckDuckGo",
+  url: "https://duckduckgo.com",
+  description: "Famous privacy-focused search engine that doesn't track users.",
+  category: "Search"
+},
+{
+  name: "MetaGer",
+  url: "https://metager.org",
+  description: "German metasearch engine offering anonymous search results.",
+  category: "Search"
+},
+{
+  name: "Presearch",
+  url: "https://presearch.com",
+  description: "Decentralized search engine rewarding users with crypto tokens.",
+  category: "Search"
+},
+{
+  name: "Andi",
+  url: "https://andisearch.com",
+  description: "AI-powered search engine providing conversational, summarized results.",
+  category: "Search"
+},
+{
+  name: "Kagi",
+  url: "https://kagi.com",
+  description: "Premium, ad-free, private search engine with focus on high-quality results.",
+  category: "Search"
+},
+{
+  name: "Infinity Search",
+  url: "https://infinitysearch.co",
+  description: "Privacy-focused search engine with customizable features.",
+  category: "Search"
+},
+{
+  name: "Gibiru",
+  url: "https://gibiru.com",
+  description: "Uncensored private search engine designed for freedom of information.",
+  category: "Search"
+},
+{
+  name: "YaCy",
+  url: "https://yacy.net",
+  description: "Decentralized, peer-to-peer search engine anyone can host.",
+  category: "Search"
+},
+{
+  name: "Komo AI",
+  url: "https://komo.ai",
+  description: "Fast AI-first search engine designed for speed and minimalism.",
+  category: "Search"
+},
+{
+  name: "Marginalia Search",
+  url: "https://search.marginalia.nu",
+  description: "Independent search engine indexing small and personal websites.",
+  category: "Search"
+}
+
+
+];
+
+// ====== STATE MANAGEMENT ======
+const state = {
+    currentTheme: localStorage.getItem('synax-theme') || 'system',
+    aiEnabled: localStorage.getItem('synax-ai-enabled') !== 'false',
+    searchHistory: JSON.parse(localStorage.getItem('synax-search-history')) || [],
+    currentSearch: ''
+};
+
+// ====== UTILITY FUNCTIONS ======
+const utils = {
+    debounce: (func, wait) => {
+        let timeout;
+        return function() {
+            const context = this, args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), wait);
+        };
+    },
+    highlightText: (text, query) => {
+        if (!query) return text;
+        const regex = new RegExp(query, 'gi');
+        return text.replace(regex, match => `<span class="highlight">${match}</span>`);
+    },
+    formatUrl: url => {
+        return url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+    }
+};
+
+// ====== THEME MANAGEMENT ======
+function setTheme(theme) {
+    state.currentTheme = theme;
+    if (theme === 'system') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    } else {
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+    localStorage.setItem('synax-theme', theme);
+}
+
+// ====== SEARCH FUNCTIONS ======
+async function performSearch() {
+    const query = searchInput.value.trim();
+    if (!query) {
+        resultsContainer.style.display = 'none';
+        return;
+    }
+
+    // Update state and URL
+    state.currentSearch = query;
+    updateURLWithSearchQuery(query);
+    addToSearchHistory(query);
+
+    // UI Updates
+    loading.style.display = 'block';
+    resultsContainer.style.display = 'none';
+    searchResults.innerHTML = '';
+    aiResponse.innerHTML = '';
+
+    try {
+        // Execute searches in parallel
+        const [aiResult, filteredWebsites] = await Promise.all([
+            state.aiEnabled ? getAIResponse(query).catch(handleAPIError) : Promise.resolve(null),
+            searchWebsites(query)
+        ]);
+
+        // Display results
+        displayResults(aiResult, filteredWebsites);
+    } catch (error) {
+        handleSearchError(error);
+    } finally {
+        loading.style.display = 'none';
+    }
+}
+
+function searchWebsites(query) {
+    return new Promise(resolve => {
+        const results = websites.filter(site => 
+            site.name.toLowerCase().includes(query.toLowerCase()) || 
+            site.description.toLowerCase().includes(query.toLowerCase()) ||
+            site.category.toLowerCase().includes(query.toLowerCase())
+        );
+        resolve(results);
+    });
+}
+
+function displayResults(aiResult, websites) {
+    if (state.aiEnabled && aiResult) {
+        aiResponse.innerHTML = `
+            <h3>AI Summary</h3>
+            <p>${aiResult}</p>
+        `;
+        aiResponse.style.display = 'block';
+    } else {
+        aiResponse.style.display = 'none';
+    }
+
+    if (websites.length > 0) {
+        websites.forEach(site => {
+            const resultElement = createResultElement(site);
+            searchResults.appendChild(resultElement);
+        });
+    } else {
+        searchResults.innerHTML = '<p>No exact matches found. Try a different query.</p>';
+    }
+
+    resultsContainer.style.display = 'block';
+}
+
+function createResultElement(site) {
+    const element = document.createElement('div');
+    element.className = 'result';
+    element.tabIndex = 0;
+    element.setAttribute('role', 'button');
+    element.setAttribute('aria-label', `Open ${site.name}`);
+    element.innerHTML = `
+        <h3 class="result-title">${utils.highlightText(site.name, state.currentSearch)}</h3>
+        <div class="result-url">${utils.formatUrl(site.url)}</div>
+        <p class="result-snippet">${utils.highlightText(site.description, state.currentSearch)}</p>
+        <div class="result-category">${site.category}</div>
+    `;
+    element.addEventListener('click', () => navigateTo(site.url));
+    element.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            navigateTo(site.url);
+        }
+    });
+    return element;
+}
+
+// ====== AI INTEGRATION ======
+async function getAIResponse(query) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    
+    try {
+        const response = await fetch('https://penguinai.derpygamer2142.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                model: "llama-3.2-11b-vision-instruct",
+                messages: [
+                    {
+                        role: "system",
+                        content: "You are a helpful search assistant. Provide concise, accurate answers to search queries. Keep responses under 150 words."
+                    },
+                    { role: "user", content: query }
+                ],
+                temperature: 0.7,
+                max_tokens: 150
+            }),
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+        if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
+        
+        const data = await response.json();
+        return data.choices[0].message.content;
+    } catch (error) {
+        clearTimeout(timeoutId);
+        throw error;
+    }
+}
+
+// ====== HISTORY MANAGEMENT ======
+function addToSearchHistory(query) {
+    if (!state.searchHistory.includes(query)) {
+        state.searchHistory.unshift(query);
+        if (state.searchHistory.length > 10) {
+            state.searchHistory.pop();
+        }
+        localStorage.setItem('synax-search-history', JSON.stringify(state.searchHistory));
+    }
+}
+
+// ====== NAVIGATION FUNCTIONS ======
+function navigateTo(url) {
+    window.location.href = url;
+}
+
+function updateURLWithSearchQuery(query) {
+    const newUrl = new URL(window.location);
+    if (query) {
+        newUrl.searchParams.set('q', query);
+    } else {
+        newUrl.searchParams.delete('q');
+    }
+    window.history.pushState({ path: newUrl.href }, '', newUrl.href);
+}
+
+// ====== ERROR HANDLING ======
+function handleAPIError(error) {
+    console.error('API Error:', error);
+    return "I couldn't retrieve an AI response for this query. Here are the web results instead.";
+}
+
+function handleSearchError(error) {
+    console.error('Search error:', error);
+    searchResults.innerHTML = '<p>There was an error processing your search. Please try again.</p>';
+    resultsContainer.style.display = 'block';
+}
+
+// ====== EVENT LISTENERS ======
+function initializeEventListeners() {
+    // Settings toggle
+    settingsBtn.addEventListener('click', () => {
+        settingsMenu.style.display = settingsMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Close settings when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!settingsMenu.contains(e.target) && e.target !== settingsBtn) {
+            settingsMenu.style.display = 'none';
+        }
+    });
+
+    // Theme selection
+    themeOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const theme = option.getAttribute('data-theme');
+            setTheme(theme);
+        });
+    });
+
+    // AI toggle
+    aiToggle.addEventListener('change', () => {
+        state.aiEnabled = aiToggle.checked;
+        localStorage.setItem('synax-ai-enabled', state.aiEnabled);
+    });
+
+    // Search triggers
+    searchBtn.addEventListener('click', performSearch);
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') performSearch();
+    });
+
+    // Site quick links
+    siteBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            navigateTo(btn.getAttribute('data-site'));
+        });
+    });
+
+    // History navigation
+    window.addEventListener('popstate', initializeFromURL);
+}
+
+// ====== INITIALIZATION ======
+function initializeFromURL() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q');
+        if (query && query.trim().length > 0) {
+            searchInput.value = query.trim();
+            performSearch();
+        }
+    } catch (e) {
+        console.error('URL parsing error:', e);
+    }
+}
+
+function initializeApp() {
+    // Set initial theme and AI toggle state
+    setTheme(state.currentTheme);
+    aiToggle.checked = state.aiEnabled;
+
+    // Initialize event listeners
+    initializeEventListeners();
+
+    // Load from URL if present
+    initializeFromURL();
+
+    // Focus search input on load
+    searchInput.focus();
+}
+
+// ====== START THE APPLICATION ======
+document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>
