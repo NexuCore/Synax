@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synax</title>
-    <link rel="icon" type="image/png" href="https://nexucore.github.io/Synax/assets/Synax.png">
+    <link rel="icon" type="image/png" href="https://nexucore.github.io/Synax/assets/Synax_better.png">
     <style>
         :root {
             --bg-color: #ffffff;
@@ -114,6 +114,12 @@
             width: 50px;
             height: 24px;
             margin-left: auto;
+        }
+
+        .logo-image {
+            max-width: 300px; /* Adjust as needed */
+            height: auto;
+            margin-bottom: 2rem;
         }
 
         .toggle-switch input {
@@ -348,7 +354,7 @@
     </header>
 
     <main>
-        <div class="logo">Synax</div>
+        <img src="https://nexucore.github.io/Synax/assets/SynaxFullLogo.png" alt="Synax Logo" class="logo-image">
         
         <div class="search-container">
             <input type="text" class="search-input" id="searchInput" placeholder="Search the web...">
@@ -1087,12 +1093,6 @@ const websites = [
   category: "Games"
 },
 {
-  name: "Twitch",
-  url: "https://twitch.tv",
-  description: "A live streaming platform, mainly for video game streaming and esports competitions.",
-  category: "Games"
-},
-{
   name: "World of Warcraft",
   url: "https://worldofwarcraft.com",
   description: "A massively multiplayer online role-playing game (MMORPG) set in the fantasy world of Azeroth.",
@@ -1223,6 +1223,354 @@ const websites = [
   url: "https://supergiantgames.com",
   description: "An indie studio behind Hades, Bastion, Transistor, and Pyre.",
   category: "Games"
+},
+{
+  name: "Discord",
+  url: "https://discord.com",
+  description: "Discord is great for playing games and chilling with friends, or even building a worldwide community. Customize your own space to talk, play, and hang out.",
+  category: "Social"
+},
+{
+    name: "WhatsApp",
+    url: "https://www.whatsapp.com/",
+    description: "Exchange private messages and make calls around the world easily and reliably, free of charge.",
+    category: "Social"
+},
+{
+  name: "Hugging Face",
+  url: "https://huggingface.co",
+  description: "A platform offering state-of-the-art AI models and NLP tools for developers and researchers.",
+  category: "AI"
+},
+{
+  name: "ElevenLabs",
+  url: "https://elevenlabs.io",
+  description: "AI-powered voice generation for realistic text-to-speech and voice cloning.",
+  category: "AI"
+},
+{
+  name: "Runway ML",
+  url: "https://runwayml.com",
+  description: "AI-powered creative tools for video editing, image generation, and more.",
+  category: "AI"
+},
+{
+  name: "Perplexity AI",
+  url: "https://perplexity.ai",
+  description: "An AI-driven answer engine that provides accurate, cited responses to queries.",
+  category: "AI"
+},
+{
+  name: "Leonardo.AI",
+  url: "https://leonardo.ai",
+  description: "AI art generation platform for creating high-quality images with customizable styles.",
+  category: "AI"
+},
+{
+  name: "Obsidian",
+  url: "https://obsidian.md",
+  description: "A powerful note-taking app with linked knowledge graphs for better organization.",
+  category: "Productivity"
+},
+{
+  name: "Toggl Track",
+  url: "https://toggl.com/track/",
+  description: "Simple time-tracking tool to boost productivity and manage work hours efficiently.",
+  category: "Productivity"
+},
+{
+  name: "Zapier",
+  url: "https://zapier.com",
+  description: "Automate workflows between thousands of apps without writing any code.",
+  category: "Productivity"
+},
+{
+  name: "Calendly",
+  url: "https://calendly.com",
+  description: "Easy scheduling tool to book meetings without back-and-forth emails.",
+  category: "Productivity"
+},
+{
+  name: "SearXNG",
+  url: "https://docs.searxng.org",
+  description: "A privacy-respecting, self-hostable metasearch engine that aggregates results from multiple sources.",
+  category: "Search"
+},
+{
+  name: "Whoogle",
+  url: "https://github.com/benbusby/whoogle-search",
+  description: "A self-hosted, ad-free, privacy-focused alternative to Google search.",
+  category: "Search"
+},
+{
+  name: "Wiby",
+  url: "https://wiby.me",
+  description: "A lightweight search engine for discovering simple, old-school websites.",
+  category: "Search"
+},
+{
+  name: "MyAnimeList",
+  url: "https://myanimelist.net",
+  description: "The largest database for anime and manga, with reviews, ratings, and recommendations.",
+  category: "Entertainment"
+},
+{
+  name: "IMDb",
+  url: "https://imdb.com",
+  description: "The Internet Movie Database, featuring film/TV show info, ratings, and reviews.",
+  category: "Entertainment"
+},
+{
+  name: "Goodreads",
+  url: "https://goodreads.com",
+  description: "Discover and review books, track reading progress, and join book discussions.",
+  category: "Entertainment"
+},
+{
+  name: "SteamDB",
+  url: "https://steamdb.info",
+  description: "Track Steam game prices, stats, and historical data for better purchasing decisions.",
+  category: "Gaming"
+},
+{
+  name: "PCGamingWiki",
+  url: "https://pcgamingwiki.com",
+  description: "A comprehensive resource for PC game fixes, patches, and troubleshooting guides.",
+  category: "Gaming"
+},
+{
+  name: "Brilliant",
+  url: "https://brilliant.org",
+  description: "Interactive learning platform for math, science, and computer science concepts.",
+  category: "Education"
+},
+{
+  name: "Duolingo",
+  url: "https://duolingo.com",
+  description: "Free, gamified language learning with bite-sized lessons and progress tracking.",
+  category: "Education"
+},
+{
+  name: "Yahoo Finance",
+  url: "https://finance.yahoo.com",
+  description: "Stock market data, financial news, and investment tracking tools.",
+  category: "Finance"
+},
+{
+  name: "Have I Been Pwned?",
+  url: "https://haveibeenpwned.com",
+  description: "Check if your email or password has been compromised in a data breach.",
+  category: "Security"
+},
+{
+  name: "ProtonMail",
+  url: "https://protonmail.com",
+  description: "Secure, encrypted email service with a focus on privacy and anonymity.",
+  category: "Security"
+},
+{
+  name: "Bitwarden",
+  url: "https://bitwarden.com",
+  description: "Open-source password manager with cross-platform sync and secure sharing.",
+  category: "Security"
+},
+{
+  name: "PrivacyTools.io",
+  url: "https://privacytools.io",
+  description: "Curated list of privacy-focused software and services to protect your data.",
+  category: "Security"
+},
+{
+  name: "Tor Project",
+  url: "https://torproject.org",
+  description: "Free software for enabling anonymous communication and resisting network surveillance.",
+  category: "Security"
+},
+{
+  name: "Signal",
+  url: "https://signal.org",
+  description: "End-to-end encrypted messaging app for private calls and texts.",
+  category: "Security"
+},
+{
+  name: "MyFitnessPal",
+  url: "https://myfitnesspal.com",
+  description: "Track calories, exercise, and nutrition to achieve your health goals.",
+  category: "Health"
+},
+{
+  name: "Strava",
+  url: "https://strava.com",
+  description: "Social fitness app for runners and cyclists to track and share workouts.",
+  category: "Health"
+},
+{
+  name: "Headspace",
+  url: "https://headspace.com",
+  description: "Meditation and mindfulness app for reducing stress and improving sleep.",
+  category: "Health"
+},
+{
+  name: "Cronometer",
+  url: "https://cronometer.com",
+  description: "Detailed nutrition tracking with micronutrient breakdowns and diet analysis.",
+  category: "Health"
+},
+{
+  name: "Fitbit",
+  url: "https://fitbit.com",
+  description: "Track activity, heart rate, sleep, and more with Fitbit devices and apps.",
+  category: "Health"
+},
+{
+  name: "Reuters",
+  url: "https://reuters.com",
+  description: "Global news agency providing unbiased, fact-based reporting on world events.",
+  category: "News"
+},
+{
+  name: "The Guardian",
+  url: "https://theguardian.com",
+  description: "International news outlet with investigative journalism and progressive perspectives.",
+  category: "News"
+},
+{
+  name: "Associated Press",
+  url: "https://apnews.com",
+  description: "Nonprofit news cooperative delivering fast, accurate, and impartial reporting.",
+  category: "News"
+},
+{
+  name: "NPR",
+  url: "https://npr.org",
+  description: "Public radio network offering in-depth news, podcasts, and cultural stories.",
+  category: "News"
+},
+{
+  name: "Al Jazeera",
+  url: "https://aljazeera.com",
+  description: "Qatar-based news network covering global affairs with a Middle Eastern focus.",
+  category: "News"
+},
+{
+  name: "arXiv",
+  url: "https://arxiv.org",
+  description: "Open-access repository for scientific papers in physics, math, CS, and more.",
+  category: "Science"
+},
+{
+  name: "PubMed",
+  url: "https://pubmed.ncbi.nlm.nih.gov",
+  description: "Free database of biomedical literature from the U.S. National Library of Medicine.",
+  category: "Science"
+},
+{
+  name: "NASA",
+  url: "https://nasa.gov",
+  description: "U.S. space agency's official site for missions, research, and stunning imagery.",
+  category: "Science"
+},
+{
+  name: "ScienceDirect",
+  url: "https://sciencedirect.com",
+  description: "Leading platform for peer-reviewed scientific, technical, and medical research.",
+  category: "Science"
+},
+{
+  name: "Nature",
+  url: "https://nature.com",
+  description: "Prestigious scientific journal publishing groundbreaking research across disciplines.",
+  category: "Science"
+},
+{
+  name: "Google Flights",
+  url: "https://google.com/flights",
+  description: "Compare flight prices, track deals, and plan trips with interactive maps.",
+  category: "Travel"
+},
+{
+  name: "Rome2rio",
+  url: "https://rome2rio.com",
+  description: "Find all possible travel routes (flights, trains, buses) between any two locations.",
+  category: "Travel"
+},
+{
+  name: "Atlas Obscura",
+  url: "https://atlasobscura.com",
+  description: "Discover hidden gems, unusual attractions, and offbeat travel destinations.",
+  category: "Travel"
+},
+{
+  name: "AllTrails",
+  url: "https://alltrails.com",
+  description: "Crowdsourced trail maps and reviews for hiking, biking, and outdoor adventures.",
+  category: "Travel"
+},
+{
+  name: "Nomad List",
+  url: "https://nomadlist.com",
+  description: "Rankings and guides for digital nomads, including cost of living and internet speeds.",
+  category: "Travel"
+},
+{
+  name: "Spotify",
+  url: "https://spotify.com",
+  description: "Stream millions of songs, podcasts, and playlists with personalized recommendations.",
+  category: "Music"
+},
+{
+  name: "SoundCloud",
+  url: "https://soundcloud.com",
+  description: "Discover and share music from emerging and independent artists worldwide.",
+  category: "Music"
+},
+{
+  name: "Audacity",
+  url: "https://audacityteam.org",
+  description: "Free, open-source audio editing software for recording and mixing tracks.",
+  category: "Music"
+},
+{
+  name: "Bandcamp",
+  url: "https://bandcamp.com",
+  description: "Support independent artists by buying music directly from creators.",
+  category: "Music"
+},
+{
+  name: "Radio Garden",
+  url: "https://radio.garden",
+  description: "Listen to live radio stations from every corner of the globe in real time.",
+  category: "Music"
+},
+{
+  name: "Internet Archive",
+  url: "https://archive.org",
+  description: "Nonprofit digital library offering free access to books, movies, music, and more.",
+  category: "Reference"
+},
+{
+  name: "Library Genesis",
+  url: "https://libgen.is",
+  description: "Shadow library providing free access to millions of academic papers and books.",
+  category: "Reference"
+},
+{
+  name: "Z-Library",
+  url: "https://z-lib.io",
+  description: "Massive collection of free ebooks, articles, and academic texts (when accessible).",
+  category: "Reference"
+},
+{
+  name: "JustWatch",
+  url: "https://justwatch.com",
+  description: "Find where to stream movies and TV shows across all major platforms.",
+  category: "Entertainment"
+},
+{
+  name: "Flightradar24",
+  url: "https://flightradar24.com",
+  description: "Track live air traffic worldwide with real-time flight data and 3D maps.",
+  category: "Travel"
 }
 
 
