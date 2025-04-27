@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,8 +68,28 @@
             justify-content: center;
         }
 
-        .settings-btn:hover {
-            background-color: var(--secondary-color);
+        :root {
+            --theme-option-hover-dark: rgba(127, 127, 127, 0.1);
+            --theme-option-hover-light: rgba(127, 127, 127, 0.1);
+            
+        }
+
+        [data-theme="dark"] {
+            --theme-option-hover-dark: rgba(127, 127, 127, 0.1);
+            --theme-option-hover-light: rgba(127, 127, 127, 0.1);
+            
+        }
+
+        .theme-option[data-theme="light"]:hover {
+            background-color: var(--theme-option-hover-dark);
+        }
+
+        .theme-option[data-theme="dark"]:hover {
+            background-color: var(--theme-option-hover-light);
+        }
+
+        .theme-option[data-theme="system"]:hover {
+            background-color: var(--theme-option-hover-dark);
         }
 
         .settings-menu {
@@ -170,7 +191,7 @@
         }
 
         .toggle-container:hover {
-            background-color: var(--secondary-color);
+            background-color: rgba(127, 127, 127, 0.1);
         }
 
         main {
