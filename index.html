@@ -4803,12 +4803,12 @@ async function getAIResponse(query) {
                 messages: [
                     {
                         role: "system",
-                        content: "You are a helpful search assistant. Provide concise, accurate answers to search queries. Keep responses under 150 words."
+                        content: "You are a helpful search assistant. Provide concise, accurate answers to search queries. Keep responses under 150 words, Your name is SynAI. Explain the users prompt like a Wikipedia article. If the user asks for a website, provide a link to the website and a short description of it. If the user asks for a specific topic, provide a summary of that topic."
                     },
                     { role: "user", content: query }
                 ],
                 temperature: 0.7,
-                max_tokens: 150
+                max_tokens: 2048
             }),
             signal: controller.signal
         });
