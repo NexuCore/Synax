@@ -4788,7 +4788,7 @@ function createResultElement(site) {
     });
     return element;
 }
-
+const now = new Date();
 // ====== AI INTEGRATION ======
 async function getAIResponse(query) {
     const controller = new AbortController();
@@ -4803,7 +4803,7 @@ async function getAIResponse(query) {
                 messages: [
                     {
                         role: "system",
-                        content: "You are a helpful search assistant. Provide concise, accurate answers to search queries. Keep responses under 150 words, Your name is SynAI. Explain the users prompt like a Wikipedia article. If the user asks for a website, provide a link to the website and a short description of it. If the user asks for a specific topic, provide a summary of that topic."
+                        content: "You are a helpful search assistant. Provide concise, accurate answers to search queries. Keep responses under 150 words, Your name is SynAI. Explain the users prompt like a Wikipedia article. If the user asks for a website, provide a link to the website and a short description of it. If the user asks for a specific topic, provide a summary of that topic. If users asks about time, then here is the current time: "+now+", If this is in another language, then translate it to English."
                     },
                     { role: "user", content: query }
                 ],
