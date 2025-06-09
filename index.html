@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5127,7 +5128,7 @@ async function getAIResponse(query) {
                 messages: [
                     {
                         role: "system",
-                        content: "You are a helpful search assistant. Provide concise, accurate answers to search queries. Keep responses under 150 words, Your name is SynAI. Explain the users prompt like a Wikipedia article. If the user asks for a website, provide a link to the website and a short description of it. If the user asks for a specific topic, provide a summary of that topic. If users asks about time, then here is the current time: "+now+", If this is in another language, then translate it to English."
+                        content: "You are a helpful search assistant. Provide concise, accurate answers to search queries. Keep responses under 150 words, Your name is SynAI. Explain the users prompt like a Wikipedia article. If the user asks for a website, provide a link to the website and a short description of it. If the user asks for a specific topic, provide a summary of that topic. If users asks about time, then here is the current time: "+now+", If this is in another language, then translate it to English. Never use --- in your responses."
                     },
                     { role: "user", content: query }
                 ],
@@ -5141,7 +5142,15 @@ async function getAIResponse(query) {
         if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
         
         const data = await response.json();
-        return data.choices[0].message.content;
+        let responseText = data.choices[0].message.content;
+        
+        // Remove everything after "---" if it exists
+        const dashIndex = responseText.indexOf('---');
+        if (dashIndex !== -1) {
+            responseText = responseText.substring(0, dashIndex);
+        }
+        
+        return responseText;
     } catch (error) {
         clearTimeout(timeoutId);
         throw error;
