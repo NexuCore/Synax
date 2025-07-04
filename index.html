@@ -68,6 +68,39 @@
             justify-content: center;
         }
 
+        .website-preview {
+    background-color: var(--result-bg);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+}
+
+.website-preview:hover {
+    background-color: var(--result-hover);
+}
+
+.website-header {
+    border-bottom: 1px solid var(--secondary-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.website-content {
+    padding: 0.5rem 0;
+}
+
+.website-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin-right: 0.5rem;
+}
+
+.website-links a:hover {
+    text-decoration: underline;
+}
+
         :root {
             --theme-option-hover-dark: rgba(127, 127, 127, 0.1);
             --theme-option-hover-light: rgba(127, 127, 127, 0.1);
@@ -5071,19 +5104,44 @@ function searchWebsites(query) {
     });
 }
 
-function displayResults(aiResult, websites) {
-    if (state.aiEnabled && aiResult) {
-        aiResponse.innerHTML = `
-            <h3>AI Summary</h3>
-            <p>${aiResult}</p>
-        `;
+function displayResults(aiWebsites, regularWebsites) {
+    // Clear previous results
+    aiResponse.innerHTML = '';
+    searchResults.innerHTML = '';
+    
+    // Display AI-generated website previews
+    if (state.aiEnabled && aiWebsites && aiWebsites.length > 0) {
         aiResponse.style.display = 'block';
+        aiResponse.innerHTML = '<h3>Generated Websites</h3>';
+        
+        aiWebsites.forEach(site => {
+            const preview = document.createElement('div');
+            preview.className = 'website-preview';
+            preview.innerHTML = `
+                <div class="website-header">
+                    <h3>${site.name}</h3>
+                    <div class="website-url">${utils.formatUrl(site.url)}</div>
+                </div>
+                <div class="website-content">
+                    <h4>${site.preview.title}</h4>
+                    <p>${site.preview.content}</p>
+                    <div class="website-links">
+                        ${site.preview.links.map(link => 
+                            `<a href="${link.url}" target="_blank">${link.text}</a>`
+                        ).join(' | ')}
+                    </div>
+                </div>
+            `;
+            preview.addEventListener('click', () => navigateTo(site.url));
+            aiResponse.appendChild(preview);
+        });
     } else {
         aiResponse.style.display = 'none';
     }
 
-    if (websites.length > 0) {
-        websites.forEach(site => {
+    // Display regular search results
+    if (regularWebsites.length > 0) {
+        regularWebsites.forEach(site => {
             const resultElement = createResultElement(site);
             searchResults.appendChild(resultElement);
         });
@@ -5128,7 +5186,26 @@ async function getAIResponse(query) {
                 messages: [
                     {
                         role: "system",
-                        content: "You are a helpful search assistant. Provide concise, accurate answers to search queries. Keep responses under 150 words, Your name is SynAI. Explain the users prompt like a Wikipedia article. If the user asks for a website, provide a link to the website and a short description of it. If the user asks for a specific topic, provide a summary of that topic. If users asks about time, then here is the current time: "+now+", If this is in another language, then translate it to English. Never use --- in your responses."
+                        content: `You are a website generator. Respond ONLY with valid JSON in this exact format:
+                        {
+                          "websites": [
+                            {
+                              "name": "Website Name",
+                              "url": "https://example.com",
+                              "description": "Brief description",
+                              "category": "Category",
+                              "preview": {
+                                "title": "Page Title",
+                                "content": "Sample content that would appear on this page",
+                                "links": [
+                                  {"text": "Home", "url": "/"},
+                                  {"text": "About", "url": "/about"}
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                        Generate 2-5 website entries based on the user's query.`
                     },
                     { role: "user", content: query }
                 ],
@@ -5142,21 +5219,21 @@ async function getAIResponse(query) {
         if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
         
         const data = await response.json();
-        let responseText = data.choices[0].message.content;
+        const jsonString = data.choices[0].message.content;
         
-        // Remove everything after "---" if it exists
-        const dashIndex = responseText.indexOf('---');
-        if (dashIndex !== -1) {
-            responseText = responseText.substring(0, dashIndex);
+        // Parse the JSON response
+        try {
+            const websiteData = JSON.parse(jsonString);
+            return websiteData.websites || [];
+        } catch (e) {
+            console.error("Failed to parse AI response:", e);
+            return [];
         }
-        
-        return responseText;
     } catch (error) {
         clearTimeout(timeoutId);
         throw error;
     }
 }
-
 // ====== HISTORY MANAGEMENT ======
 function addToSearchHistory(query) {
     if (!state.searchHistory.includes(query)) {
