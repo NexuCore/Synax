@@ -637,7 +637,8 @@ const _b = [
   '5gcqEntM5KTj6IvEGdqDNDtwljEEwYND8htjh+nQb61b5/43uZlpzQjsOa8HMfr4ZZXGmQrse/JHL2N2UxC5mXP/avFB0UymJAEBUbf1N0MRr7KgW62qPEh+vA==',
   '8SnvWkb/bl+TjzWaheFFqjzKv66eHog4c8W4FrOz+8wunywg1KBCOZYWvG5tDFPZz8qSObcAFMEIeR9Q4/YPIvnZMLxpkuYSiBiktyyB6tnirlO8SgjO9MhprP0Y0yPhW0nRBQodbZPmX9ObH2ygFOMGAMrU',
   'mJMHH30TfBPVWgbAjAJ2ezbzc8Zls/S9jVD9UgjVFuuz38cAv0kiLE1EHsYhqkN1EoGa2nQtQ098Kg/j5EjGnogFwK1sReQaE8wAvyZ64R5KIPTxBl/Pc+U=',
-  'kwcGhmv1gdSxiHcWL4TClpTkYgB1Bp+2Je7WGc5A1a07UiCdBLn2fmre2ywfeRxuoaZUWt0f001bG5+0q+dJbv4zwDvpeGOOylorbR1OhQ=='
+  'kwcGhmv1gdSxiHcWL4TClpTkYgB1Bp+2Je7WGc5A1a07UiCdBLn2fmre2ywfeRxuoaZUWt0f001bG5+0q+dJbv4zwDvpeGOOylorbR1OhQ==',
+  'rGxq0qqH1u0dGfaX+A4/2o4eklnnNRgtXmLM6tRWaHyS7eeMviUr+7rgElNKL2qvZl9OL8iplOMbA4PB6EQ3HLsxly9NbIUbR6Hp5z8bvWCMz/4d3oaL9XpljX0aT3zKjkUALQ=='
 ];
 const _k = ['nx7Kp2mQ','zR4vLwYs','9BcXeF3j','D6hTuA1i'].join('');
 
@@ -652,9 +653,9 @@ async function _r(b64) {
   return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM', iv:raw.slice(16,28)}, dk, raw.slice(28)));
 }
 
-let OR_KEY, OR_MODEL, OR_BASE, AC_KEY, AC_BASE, AC_MODEL;
+let OR_KEY, OR_MODEL, OR_BASE, AC_KEY, AC_BASE, AC_MODEL, _sa;
 const _ready = (async () => {
-  [OR_KEY, OR_MODEL, OR_BASE, AC_KEY, AC_BASE, AC_MODEL] = await Promise.all(_b.map(_r));
+  [OR_KEY, OR_MODEL, OR_BASE, AC_KEY, AC_BASE, AC_MODEL, _sa] = await Promise.all(_b.map(_r));
 })();
 
 // ── STATE ───────────────────────────────────────────────────────────────────
@@ -860,58 +861,58 @@ function setTab(btn, tab) {
   document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
   currentTab = tab;
+  if (tab !== 'all') document.getElementById('sidebar').innerHTML = '';
   renderResults();
 }
 
 // ── AI: STEP 1 and Get URLs from Pollinations ──────────────────────────────────
 async function fetchAIResults(query) {
-  await _ready;
   if (aiResultsCache[query]) return aiResultsCache[query];
-  const tabHint = currentTab !== 'all' ? ` Focus results on: ${currentTab}.` : '';
-  const prompt = `You are a search engine URL generator. The user searched for: "${query}"${tabHint}
 
-Return ONLY a JSON object (no markdown, no explanation) like this:
-{
-  "infobox": {
-    "title": "Main entity name",
-    "subtitle": "Short type label e.g. Website · Technology Company · Programming Language",
-    "description": "2-3 sentence factual description of the main entity.",
-    "url": "https://official-website.com"
-  },
-  "related": ["related query 1", "related query 2", "related query 3", "related query 4"],
-  "urls": [
-    "https://example1.com",
-    "https://example2.com",
-    "https://example3.com",
-    "https://example4.com",
-    "https://example5.com",
-    "https://example6.com"
-  ]
-}
-
-Rules:
-- urls must be real, working, well-known websites relevant to the query
-- include the most authoritative and popular websites for this topic
-- infobox.url should be the most official/relevant single site
-- return exactly 6 urls
-- related should be 4 short, relevant search queries
-- respond with valid JSON only, nothing else`;
-
-  const res = await fetch(OR_BASE, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${OR_KEY}`
-    },
-    body: JSON.stringify({ model:OR_MODEL, messages:[{role:'user',content:prompt}], max_tokens:1200, temperature:0.3 })
-  });
-  if (!res.ok) throw new Error(`Pollinations ${res.status}`);
+  const res = await fetch(`http://localhost:5000/api/search?q=${encodeURIComponent(query)}&count=10`);
+  if (!res.ok) throw new Error(`Search API ${res.status}`);
   const data = await res.json();
-  const raw  = data.choices?.[0]?.message?.content?.trim() || '{}';
-  const clean = raw.replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```$/,'').trim();
-  const parsed = JSON.parse(clean);
-  aiResultsCache[query] = parsed;
-  return parsed;
+
+  // Convert your API's result format into the shape the rest of the code expects
+  const urls = (data.results || []).map(r => r.url);
+
+  // Build metas directly from the API results (no need to call fetchMeta for title/description)
+  const metas = (data.results || []).map(r => {
+    const domain = (() => { try { return new URL(r.url).hostname.replace('www.',''); } catch { return r.url; } })();
+    return {
+      url:         r.url,
+      domain:      domain,
+      title:       r.title || domain,
+      description: r.description || '',
+      favicon:     `https://www.google.com/s2/favicons?domain=${encodeURIComponent(r.url)}&sz=32`,
+      ogImage:     null
+    };
+  });
+
+  // Still ask AI for the infobox + related searches only
+  let infobox = null, related = [];
+  try {
+    await _ready;
+    // Wikipedia infobox (free, no AI needed)
+    infobox = await fetchWikipediaInfobox(query);
+
+    // AI only for related searches now
+    const prompt = `The user searched for: "${query}"
+Return ONLY a JSON array of 4 related search queries, no markdown. Example: ["query 1","query 2","query 3","query 4"]`;
+    const aiRes = await fetch(OR_BASE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OR_KEY}` },
+      body: JSON.stringify({ model: OR_MODEL, messages: [{ role: 'user', content: prompt }], max_tokens: 120, temperature: 0.4 })
+    });
+    const aiData = await aiRes.json();
+    const raw = aiData.choices?.[0]?.message?.content?.trim() || '[]';
+    const clean = raw.replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```$/,'').trim();
+    try { related = JSON.parse(clean); } catch { related = []; }
+  } catch {}
+
+  const result = { urls, metas, infobox, related };
+  aiResultsCache[query] = result;
+  return result;
 }
 
 async function fetchMeta(url) {
@@ -985,7 +986,7 @@ async function renderResults() {
     }
 
     const t0 = Date.now();
-    main.innerHTML = `<div class="state-loading"><div class="spinner"></div><p id="loadMsg">Asking AI for the best sites…</p></div>`;
+    main.innerHTML = `<div class="state-loading"><div class="spinner"></div><p id="loadMsg">Synaxing the web...</p></div>`;
     sidebar.innerHTML = '';
 
     let aiData;
@@ -1000,39 +1001,9 @@ async function renderResults() {
     const lm = document.getElementById('loadMsg');
     if (lm) lm.textContent = 'Fetching site metadata…';
 
-    const urls  = (aiData.urls || []).slice(0, 6);
-    const metas = await Promise.all(urls.map(fetchMeta));
+// Metas are already built inside fetchAIResults from your API
+    const metas = aiData.metas || [];
 
-    // Fill in missing title/description from AI for any site that came back empty
-    await Promise.all(metas.map(async (m) => {
-      const needsTitle = !m.title || m.title === m.domain;
-      const needsDesc  = !m.description;
-      if (!needsTitle && !needsDesc) return;
-      try {
-        const what = needsTitle && needsDesc ? 'a page title and a one-sentence description'
-                   : needsTitle ? 'a page title'
-                   : 'a one-sentence description';
-        const res = await fetch(OR_BASE, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OR_KEY}` },
-          body: JSON.stringify({
-            model: OR_MODEL,
-            messages: [{ role: 'user', content: `Generate ${what} for this website: ${m.url}\nReturn ONLY a JSON object: {"title":"...","description":"..."}\nJSON only, no markdown.` }],
-            max_tokens: 120, temperature: 0.3
-          }),
-          signal: AbortSignal.timeout(8000)
-        });
-        if (!res.ok) return;
-        const data = await res.json();
-        const raw = data.choices?.[0]?.message?.content?.trim() || '{}';
-        const clean = raw.replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```$/,'').trim();
-        const gen = JSON.parse(clean);
-        if (needsTitle && gen.title)       m.title       = gen.title;
-        if (needsDesc  && gen.description) m.description = gen.description;
-      } catch {}
-    }));
-
-    // Cache the metas for this query so tab switches are instant
     metasCache[currentQuery] = { metas, elapsed: ((Date.now()-t0)/1000).toFixed(2) };
 
     renderWithData(aiData, metasCache[currentQuery], sidebar);
@@ -1043,27 +1014,43 @@ async function renderResults() {
   }
 }
 
-function renderWithData(aiData, metasCacheEntry, sidebar) {
+async function renderWithData(aiData, metasCacheEntry, sidebar) {
   const main = document.getElementById('resultsMain');
   const { metas, elapsed } = metasCacheEntry;
 
-  let html = `<p class="results-meta">About ${(Math.random()*4+0.8).toFixed(2).replace('.',',')} billion results (${elapsed} seconds)</p>`;
+  let html = `<p class="results-meta">About 10 snacks and 20 snaps (${elapsed} seconds)</p>`;
+
+  if (currentTab === 'all') {
+    html += `
+    <div id="pexels-strip" style="display:none;margin-bottom:28px;">
+      <div style="font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Images</div>
+      <div id="pexels-grid" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+      <button id="pexels-more-btn" style="display:none;margin-top:14px;width:100%;padding:10px;background:var(--card);border:1px solid var(--border);border-radius:20px;color:var(--fg);font-family:var(--serif);font-size:13px;cursor:pointer;align-items:center;justify-content:center;gap:6px;transition:background 0.15s;"
+        onmouseenter="this.style.background='var(--hover)'" onmouseleave="this.style.background='var(--card)'">
+        Show more images &nbsp;&#8964;
+      </button>
+    </div>`;
+  }
 
   if (currentTab === 'images') {
-    const withImages = metas.filter(m => m.ogImage);
-    if (!withImages.length) {
-      html += `<div class="state-empty" style="min-height:200px"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><p>No images found for this query.</p></div>`;
+    main.innerHTML = `<div class="state-loading"><div class="spinner"></div><p>Synaxing images…</p></div>`;
+    const photos = await fetchPexelsImages(currentQuery);
+    let imgHtml = `<p class="results-meta">Images for "${escHtml(currentQuery)}" via Pexels</p>`;
+    if (!photos.length) {
+      imgHtml += `<div class="state-empty" style="min-height:200px"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><p>No images found for this query.</p></div>`;
     } else {
-      html += `<div class="image-grid" style="grid-column:1/-1">`;
-      withImages.forEach((m, i) => {
-        html += `
-        <div class="image-grid-item" style="animation-delay:${i*0.05}s" onclick="openLightbox('${escHtml(m.ogImage)}')">
-          <img src="${escHtml(m.ogImage)}" alt="${escHtml(m.title)}" onerror="this.closest('.image-grid-item').remove()"/>
-          <div class="image-grid-caption">${escHtml(m.domain)}</div>
+      imgHtml += `<div class="image-grid" style="grid-column:1/-1">`;
+      photos.forEach((p, i) => {
+        imgHtml += `
+        <div class="image-grid-item" style="animation-delay:${i*0.04}s" onclick="openLightbox('${escHtml(p.src)}')">
+          <img src="${escHtml(p.thumb)}" alt="${escHtml(p.alt)}" loading="lazy" onerror="this.closest('.image-grid-item').remove()"/>
+          <div class="image-grid-caption">📷 ${escHtml(p.photographer)}</div>
         </div>`;
       });
-      html += `</div>`;
+      imgHtml += `</div>`;
     }
+    main.innerHTML = imgHtml;
+    return;
   } else {
     metas.forEach((m, i) => {
       const pathParts = (() => {
@@ -1083,7 +1070,7 @@ function renderWithData(aiData, metasCacheEntry, sidebar) {
           <span class="result-domain">${escHtml(m.domain)}</span>
           <span class="result-breadcrumb"> › ${escHtml(pathParts.split(' › ').slice(1).join(' › ') || m.domain)}</span>
         </div>
-        <a href="${escHtml(m.url)}" target="_blank" rel="noopener" class="result-title">${escHtml(m.title)}</a>
+        <a href="${escHtml(m.url)}" class="result-title">${escHtml(m.title)}</a>
         <div class="result-snippet">${escHtml(m.description || 'No description available.')}</div>
         ${showImage ? `<img class="result-og" src="${escHtml(m.ogImage)}" alt="" onerror="this.remove()"/>` : ''}
         <span class="result-tag">${escHtml(m.domain)}</span>
@@ -1093,12 +1080,74 @@ function renderWithData(aiData, metasCacheEntry, sidebar) {
 
   main.innerHTML = html;
 
+// ── Inline Pexels images for All tab ──
+  if (currentTab === 'all') {
+    const stripEl = main.querySelector('#pexels-strip');
+    if (stripEl) {
+      (async () => {
+        try {
+          const res = await fetch(
+            `https://api.pexels.com/v1/search?query=${encodeURIComponent(currentQuery)}&per_page=6`,
+            { headers: { Authorization: _sa } }
+          );
+          const data = await res.json();
+          const photos = data.photos || [];
+          if (!photos.length) { stripEl.remove(); return; }
+
+          let shown = 3;
+          const allPhotos = photos;
+
+          function renderStrip() {
+            const grid = stripEl.querySelector('#pexels-grid');
+            grid.innerHTML = '';
+            allPhotos.slice(0, shown).forEach(p => {
+              const card = document.createElement('div');
+              card.style.cssText = 'flex:0 0 calc(33.333% - 8px);min-width:120px;max-width:260px;cursor:pointer;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:var(--card);transition:transform 0.15s,box-shadow 0.15s;';
+              card.onmouseenter = () => { card.style.transform='scale(1.02)'; card.style.boxShadow='0 4px 16px rgba(0,0,0,.4)'; };
+              card.onmouseleave = () => { card.style.transform=''; card.style.boxShadow=''; };
+              card.addEventListener('click', () => openLightbox(p.src.large));
+
+              const img = document.createElement('img');
+              img.src = p.src.medium;
+              img.alt = p.alt || currentQuery;
+              img.loading = 'lazy';
+              img.style.cssText = 'width:100%;height:clamp(90px,12vw,160px);object-fit:cover;display:block;';
+              img.onerror = () => card.remove();
+
+              const cap = document.createElement('div');
+              cap.style.cssText = 'padding:6px 10px;font-size:11px;color:var(--muted);font-family:var(--mono);display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
+              cap.innerHTML = `<span style="font-size:13px;">📷</span><span style="overflow:hidden;text-overflow:ellipsis;">${p.photographer}</span>`;
+
+              card.appendChild(img);
+              card.appendChild(cap);
+              grid.appendChild(card);
+            });
+
+            const btn = stripEl.querySelector('#pexels-more-btn');
+            if (shown >= allPhotos.length) {
+              btn.style.display = 'none';
+            } else {
+              btn.style.display = 'flex';
+              btn.onclick = () => { shown = allPhotos.length; renderStrip(); };
+            }
+          }
+
+          renderStrip();
+          stripEl.style.display = 'block';
+        } catch { stripEl.remove(); }
+      })();
+    }
+
+    // Remove per-result placeholders
+    main.querySelectorAll('.result-pexels-img').forEach(el => el.remove());
+  }
   // ── Sidebar ──
   let sb = '';
-  if (aiData.infobox) {
+  if (aiData.infobox && currentTab === 'all') {
     const ib = aiData.infobox;
     const ibFav = ib.url ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(ib.url)}&sz=32` : '';
     sb += `<div class="infobox"><div class="infobox-body">
+      ${ib.thumbnail ? `<img src="${escHtml(ib.thumbnail)}" alt="${escHtml(ib.title||'')}" style="width:100%;max-height:220px;object-fit:contain;background:#000;border-radius:4px;margin-bottom:12px;display:block;" onerror="this.remove()"/>` : ''}
       <div class="infobox-logo">
         ${ibFav ? `<img src="${escHtml(ibFav)}" alt="" onerror="this.remove()"/>` : ''}
         <div>
@@ -1107,7 +1156,7 @@ function renderWithData(aiData, metasCacheEntry, sidebar) {
         </div>
       </div>
       ${ib.description ? `<div class="infobox-desc">${escHtml(ib.description)}</div>` : ''}
-      ${ib.url ? `<a class="infobox-link" href="${escHtml(ib.url)}" target="_blank" rel="noopener">${escHtml(ib.url.replace(/^https?:\/\//,''))}</a>` : ''}
+      ${ib.url ? `<a class="infobox-link" href="${escHtml(ib.url)}">Read on Wikipedia ↗</a>` : ''}
     </div></div>`;
   }
 
@@ -1139,32 +1188,49 @@ function renderWithData(aiData, metasCacheEntry, sidebar) {
   });
 }
 
-function renderFallback() {
-  const main = document.getElementById('resultsMain');
-  const matches = searchLocalSites(currentQuery);
-  if (!matches.length) {
-    main.innerHTML = `<div class="state-empty">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <p>No results found for "<strong>${escHtml(currentQuery)}</strong>"</p>
-    </div>`;
-    return;
-  }
-  let html = `<p class="results-meta">${matches.length} result${matches.length!==1?'s':''} found</p>`;
-  matches.forEach((s, i) => {
-    const domain = s.url.replace(/^https?:\/\/(www\.)?/,'').replace(/\/.*/,'');
-    const favicon = `https://www.google.com/s2/favicons?domain=${s.url}&sz=32`;
-    html += `
-    <div class="result-item" style="animation-delay:${i*0.05}s">
-      <div class="result-source-row">
-        <img class="result-favicon" src="${escHtml(favicon)}" onerror="this.style.display='none'" alt="" width="16" height="16"/>
-        <span class="result-domain">${escHtml(domain)}</span>
-      </div>
-      <a href="${escHtml(s.url)}" target="_blank" rel="noopener" class="result-title">${escHtml(s.name)}</a>
-      <div class="result-snippet">${escHtml(s.description)}</div>
-      <span class="result-tag">${escHtml(s.category)}</span>
-    </div>`;
-  });
-  main.innerHTML = html;
+async function fetchWikipediaInfobox(query) {
+  try {
+    // Search for the best matching article
+    const searchRes = await fetch(
+      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json&origin=*&srlimit=1`
+    );
+    const searchData = await searchRes.json();
+    const title = searchData?.query?.search?.[0]?.title;
+    if (!title) return null;
+
+    // Get the summary for that article
+    const summaryRes = await fetch(
+      `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`
+    );
+    const s = await summaryRes.json();
+    if (!s || s.type === 'disambiguation') return null;
+
+    return {
+      title:       s.title,
+      subtitle:    s.description || '',
+      description: s.extract ? s.extract.slice(0, 400) + (s.extract.length > 400 ? '…' : '') : '',
+      url:         s.content_urls?.desktop?.page || '',
+      thumbnail:   s.thumbnail?.source || null
+    };
+  } catch { return null; }
+}
+
+async function fetchPexelsImages(query) {
+  try {
+    const res = await fetch(
+      `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=20`,
+      { headers: { Authorization: _sa } }
+    );
+    if (!res.ok) throw new Error('Pexels error');
+    const data = await res.json();
+    return (data.photos || []).map(p => ({
+      src: p.src.large,
+      thumb: p.src.medium,
+      alt: p.alt || query,
+      photographer: p.photographer,
+      url: p.url
+    }));
+  } catch { return []; }
 }
 
 function activateFilter(btn) {
@@ -1208,7 +1274,7 @@ function renderFavorites() {
   }
   grid.innerHTML = favs.map((f, i) => {
     const favicon = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(f.url)}&sz=32`;
-    return `<a class="fav-item" href="${escHtml(f.url)}" target="_blank" rel="noopener"
+    return `<a class="fav-item" href="${escHtml(f.url)}"
         draggable="true" data-idx="${i}" style="animation-delay:${i*0.04}s">
       <img src="${escHtml(favicon)}" onerror="this.style.display='none'" alt=""/>
       <span class="fav-item-name">${escHtml(f.name)}</span>
