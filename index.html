@@ -638,7 +638,8 @@ const _b = [
   '8SnvWkb/bl+TjzWaheFFqjzKv66eHog4c8W4FrOz+8wunywg1KBCOZYWvG5tDFPZz8qSObcAFMEIeR9Q4/YPIvnZMLxpkuYSiBiktyyB6tnirlO8SgjO9MhprP0Y0yPhW0nRBQodbZPmX9ObH2ygFOMGAMrU',
   'mJMHH30TfBPVWgbAjAJ2ezbzc8Zls/S9jVD9UgjVFuuz38cAv0kiLE1EHsYhqkN1EoGa2nQtQ098Kg/j5EjGnogFwK1sReQaE8wAvyZ64R5KIPTxBl/Pc+U=',
   'kwcGhmv1gdSxiHcWL4TClpTkYgB1Bp+2Je7WGc5A1a07UiCdBLn2fmre2ywfeRxuoaZUWt0f001bG5+0q+dJbv4zwDvpeGOOylorbR1OhQ==',
-  'rGxq0qqH1u0dGfaX+A4/2o4eklnnNRgtXmLM6tRWaHyS7eeMviUr+7rgElNKL2qvZl9OL8iplOMbA4PB6EQ3HLsxly9NbIUbR6Hp5z8bvWCMz/4d3oaL9XpljX0aT3zKjkUALQ=='
+  'rGxq0qqH1u0dGfaX+A4/2o4eklnnNRgtXmLM6tRWaHyS7eeMviUr+7rgElNKL2qvZl9OL8iplOMbA4PB6EQ3HLsxly9NbIUbR6Hp5z8bvWCMz/4d3oaL9XpljX0aT3zKjkUALQ==',
+  'y3oxbpTZzPn67rDzoQRJCyYUFVv4YYSZWf2OyQqDM1tHxzActj9PrWXhjts+Et32JISPRV0QlvgPoDyHjShZolFjTF6m'
 ];
 const _k = ['nx7Kp2mQ','zR4vLwYs','9BcXeF3j','D6hTuA1i'].join('');
 
@@ -655,7 +656,8 @@ async function _r(b64) {
 
 let OR_KEY, OR_MODEL, OR_BASE, AC_KEY, AC_BASE, AC_MODEL, _sa;
 const _ready = (async () => {
-  [OR_KEY, OR_MODEL, OR_BASE, AC_KEY, AC_BASE, AC_MODEL, _sa] = await Promise.all(_b.map(_r));
+  let LOCAL_API_BASE;
+  [OR_KEY, OR_MODEL, OR_BASE, AC_KEY, AC_BASE, AC_MODEL, _sa, LOCAL_API_BASE] = await Promise.all(_b.map(_r));
 })();
 
 // ── STATE ───────────────────────────────────────────────────────────────────
@@ -869,7 +871,7 @@ function setTab(btn, tab) {
 async function fetchAIResults(query) {
   if (aiResultsCache[query]) return aiResultsCache[query];
 
-  const res = await fetch(`https://synax-api.up.railway.app/api/search?q=${encodeURIComponent(query)}&count=10`);
+  const res = await fetch(`${LOCAL_API_BASE}/api/search?q=${encodeURIComponent(query)}&count=10`);
   if (!res.ok) throw new Error(`Search API ${res.status}`);
   const data = await res.json();
 
