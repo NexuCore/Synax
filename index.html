@@ -869,7 +869,7 @@ function setTab(btn, tab) {
 async function fetchAIResults(query) {
   if (aiResultsCache[query]) return aiResultsCache[query];
 
-  const res = await fetch(`http://localhost:5000/api/search?q=${encodeURIComponent(query)}&count=10`);
+  const res = await fetch(`http://synax-api.up.railway.app/api/search?q=${encodeURIComponent(query)}&count=10`);
   if (!res.ok) throw new Error(`Search API ${res.status}`);
   const data = await res.json();
 
