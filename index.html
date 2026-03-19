@@ -998,6 +998,7 @@ async function renderResults() {
       main.innerHTML = `<div class="state-empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>AI error: ${escHtml(e.message)}</p></div>`;
       renderFallback();
       return;
+      
     }
 
     const lm = document.getElementById('loadMsg');
@@ -1010,9 +1011,28 @@ async function renderResults() {
 
     renderWithData(aiData, metasCache[currentQuery], sidebar);
 
-  } else {
+} else {
     // ── Fallback (AI off): local DB ──
-    renderFallback();
+    const matches = searchLocalSites(currentQuery);
+    const main = document.getElementById('resultsMain');
+    if (!matches.length) {
+      main.innerHTML = `<div class="state-empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>No results found for "<strong>${escHtml(currentQuery)}</strong>"</p></div>`;
+      return;
+    }
+    let html = `<p class="results-meta">${matches.length} result${matches.length!==1?'s':''} found</p>`;
+    matches.forEach((s, i) => {
+      const favicon = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(s.url)}&sz=32`;
+      html += `<div class="result-item" style="animation-delay:${i*0.05}s">
+        <div class="result-source-row">
+          <img class="result-favicon" src="${escHtml(favicon)}" onerror="this.style.display='none'" alt=""/>
+          <span class="result-domain">${escHtml(new URL(s.url).hostname.replace('www.',''))}</span>
+        </div>
+        <a href="${escHtml(s.url)}" class="result-title">${escHtml(s.name)}</a>
+        <div class="result-snippet">${escHtml(s.description)}</div>
+        <span class="result-tag">${escHtml(s.category)}</span>
+      </div>`;
+    });
+    main.innerHTML = html;
   }
 }
 
