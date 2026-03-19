@@ -654,9 +654,8 @@ async function _r(b64) {
   return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM', iv:raw.slice(16,28)}, dk, raw.slice(28)));
 }
 
-let OR_KEY, OR_MODEL, OR_BASE, AC_KEY, AC_BASE, AC_MODEL, _sa;
+let OR_KEY, OR_MODEL, OR_BASE, AC_KEY, AC_BASE, AC_MODEL, _sa, LOCAL_API_BASE;
 const _ready = (async () => {
-  let LOCAL_API_BASE;
   [OR_KEY, OR_MODEL, OR_BASE, AC_KEY, AC_BASE, AC_MODEL, _sa, LOCAL_API_BASE] = await Promise.all(_b.map(_r));
 })();
 
@@ -995,10 +994,8 @@ async function renderResults() {
     try {
       aiData = await fetchAIResults(currentQuery);
     } catch (e) {
-      main.innerHTML = `<div class="state-empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>AI error: ${escHtml(e.message)}</p></div>`;
-      renderFallback();
+      main.innerHTML = `<div class="state-empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>Search error: ${escHtml(e.message)}</p></div>`;
       return;
-      
     }
 
     const lm = document.getElementById('loadMsg');
